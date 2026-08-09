@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate:data": "node scripts/validate-data.mjs",
+    "validate:visual": "node scripts/validate-visual-contract.mjs",
+    "test": "node scripts/test-catalogue.mjs && node scripts/test-progress.mjs"
+  }
+}
