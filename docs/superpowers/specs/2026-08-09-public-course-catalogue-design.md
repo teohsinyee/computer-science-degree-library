@@ -1,6 +1,6 @@
 # Public Course Catalogue Design
 
-**Issue:** #1  
+**Issue:** #1
 **Status:** Ready for review
 
 ## Goal
