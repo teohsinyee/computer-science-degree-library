@@ -7,7 +7,7 @@ An interactive, chapter-based library of courses from a Computer Science degree,
 This is a public course-learning platform, not a file mirror. It makes it easy to:
 
 - find a course or concept quickly;
-- see the chapters and key reference books for a course;
+- see the chapters and properly cited key reference books for a course;
 - continue unfinished revision from the last chapter;
 - open the complete course-material folder in Google Drive; and
 - show anonymous course interest through public learner-view counts.
@@ -36,6 +36,7 @@ The initial catalogue currently contains:
 - [Project start record](docs/process/2026-08-09-project-start.md)
 - [Working product design](docs/design/2026-08-09-course-learning-platform.md)
 - [Architecture decision](docs/decisions/0001-platform-architecture.md)
+- [Public catalogue boundary](docs/decisions/0002-public-catalogue-boundary.md)
 - [Backlog](docs/backlog.md)
 
 ## Boundaries

@@ -5,7 +5,8 @@
 - [ ] Import the 33-course catalogue from the organised collection.
 - [ ] Add the Google Drive folder URL for each course after upload.
 - [ ] Build search and eight-category browsing.
-- [ ] Build the course view with chapters and `R##` reference books.
+- [ ] Build the course view with high-level chapters and properly cited `R##` reference books.
+- [ ] Curate public reference metadata: author, title, edition, and year where known.
 - [ ] Add guest-local chapter progress.
 - [ ] Add Google sign-in and Firebase progress sync.
 - [ ] Add privacy-safe public learner counts.

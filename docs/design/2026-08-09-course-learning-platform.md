@@ -21,12 +21,12 @@ The editable visual exploration is in [Figma](https://www.figma.com/design/u7rAM
 
 Each course view includes:
 
-1. Course code, title, category, and a short description.
+1. Course code, title, category, and a short description. The title is the primary label; the code is a smaller historical navigation label, not an official university listing.
 2. `View All Course Materials ↗`, which opens the course's single Google Drive folder.
 3. Public learner interest, written as `1,284 learners explored this course`.
 4. Ordered chapters generated from the numbered course notes.
 5. A checkbox for each chapter, a progress summary, and a continue-learning action.
-6. A separate list of `R##` reference books for deeper study.
+6. A separate, properly cited list of `R##` reference books for deeper study. Each entry shows author, book title, edition, and year where known; for example, `R01 · Ian Sommerville — Software Engineering (10th ed., 2016)`.
 
 ## Learning state
 
@@ -41,7 +41,9 @@ Course pages show a human-readable count of anonymous learners who explored the 
 
 ## Data boundaries
 
-The public catalogue contains course structure, chapter titles, reference-book titles, categories, and Drive folder URLs. It contains no course files. Google Drive remains the sole authority for material access.
+The public catalogue contains course codes and titles, high-level course structure, curated topic or chapter titles, properly cited reference books, categories, and Drive folder URLs. It contains no course files, raw lecture-note filenames, scanned pages, slides, textbooks, or planner contents. Google Drive remains the sole authority for material access.
+
+The catalogue must label itself as a personal historical course library, not an official university catalogue. It must not use university branding or imply institutional endorsement.
 
 ## Deferred work
 
@@ -62,4 +64,5 @@ Course relationship definitions and an interactive relationship map are delibera
 - Google sign-in merges guest progress without losing completed chapters.
 - One learner cannot read or update another learner's progress.
 - Reference books and chapters are rendered in their existing numbered order.
+- Every public reference-book entry shows at least author and title; edition and year appear when known.
 - Missing or restricted Drive folders fail clearly and safely.

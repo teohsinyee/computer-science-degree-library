@@ -18,7 +18,9 @@ It has two audiences:
 | Access control | Google Drive decides who can open materials |
 | Learning progress | Start immediately in the browser; offer Google sign-in later for cross-device sync |
 | Public progress | Each signed-in learner sees only their own progress |
-| Reference books | Show the main `R##` reference books separately on every course page |
+| Reference books | Show the main `R##` reference books separately, cited with author, title, edition, and year where known |
+| Public catalogue boundary | Publish only course metadata, high-level topics, and book citations; keep files and raw file listings out of the public site |
+| Course codes | Keep as small historical navigation labels; course title remains primary and the site is not an official university catalogue |
 | Public interest | Show anonymous learner counts, e.g. `1,284 learners explored this course` |
 | Course relationships | Backlog; relationship meaning has not been decided yet |
 | Product identity | Neutral course-learning platform; no personal or university branding |
