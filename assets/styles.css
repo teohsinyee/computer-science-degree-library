@@ -1,0 +1,51 @@
+:root {
+  color: #1d1c1a;
+  background: #f8f4ec;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; }
+
+.site-header, .catalogue-layout { max-width: 76rem; margin: auto; padding: 2rem clamp(1rem, 4vw, 4rem); }
+
+.site-header { border-bottom: 1px solid #1d1c1a; }
+
+.eyebrow { margin: 0 0 .75rem; font: 700 .75rem/1.2 Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+
+h1 { max-width: 12ch; margin: 0 0 2rem; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 400; line-height: .95; }
+
+.search-form { max-width: 34rem; }
+
+label { display: block; margin-bottom: .5rem; font: 700 .875rem/1.2 Arial, sans-serif; }
+
+input { width: 100%; padding: .85rem 1rem; border: 1px solid #1d1c1a; border-radius: 0; background: #fffdf8; color: inherit; font: inherit; }
+
+.catalogue-layout { display: grid; gap: 2rem; }
+
+.category-filters { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+.district { display: inline-block; padding: .65rem .9rem; color: inherit; font: 700 .875rem/1.2 Arial, sans-serif; text-decoration: none; }
+.district-foundations { background: #f3cf66; }
+.district-systems { background: #9ac9bc; }
+.district-data { background: #9bbceb; }
+.district-design { background: #eaa0a0; }
+
+#result-summary { margin: 1.5rem 0 1rem; font: .9rem/1.4 Arial, sans-serif; }
+
+.course-grid { min-height: 12rem; border-top: 1px solid #1d1c1a; }
+
+#course-detail { min-height: 12rem; border: 1px solid #1d1c1a; background: #fffdf8; }
+
+:focus-visible { outline: 3px solid #1d1c1a; outline-offset: 3px; }
+
+@media (min-width: 900px) {
+  .catalogue-layout { grid-template-columns: minmax(0, 1fr) minmax(20rem, 28rem); }
+}
+
+@media (max-width: 899px) {
+  .catalogue-layout { display: block; }
+  #course-detail { margin-top: 2rem; }
+  #course-detail[data-open="true"] { position: fixed; inset: 0; overflow: auto; }
+}

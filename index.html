@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Course catalogue</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <p class="eyebrow">Course catalogue</p>
+      <h1>Find a course. Continue learning.</h1>
+      <form class="search-form" role="search">
+        <label for="course-search">Search courses</label>
+        <input id="course-search" name="course-search" type="search" placeholder="Search by course or topic">
+      </form>
+    </header>
+
+    <div class="catalogue-layout">
+      <main>
+        <nav id="category-filters" aria-label="Course categories" class="category-filters">
+          <a class="district district-foundations" href="#course-grid">Foundations</a>
+          <a class="district district-systems" href="#course-grid">Systems</a>
+          <a class="district district-data" href="#course-grid">Data</a>
+          <a class="district district-design" href="#course-grid">Design</a>
+        </nav>
+        <p id="result-summary" aria-live="polite">Courses will appear here.</p>
+        <section id="course-grid" aria-label="Courses" class="course-grid"></section>
+      </main>
+
+      <aside id="course-detail" aria-label="Course details" data-open="false"></aside>
+    </div>
+
+    <script type="module" src="assets/app.js"></script>
+  </body>
+</html>
