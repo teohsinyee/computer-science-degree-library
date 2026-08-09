@@ -22,6 +22,14 @@ Course materials remain in Google Drive and keep Google Drive's access controls.
 - Visual direction: a light, map-inspired course explorer with colourful subject districts.
 - Product identity: neutral course-learning platform; no personal name or university branding.
 
+## Verify the public catalogue
+
+```powershell
+npm run validate:data
+npm test
+node scripts/validate-shell.mjs
+```
+
 ## Content inventory
 
 The initial catalogue currently contains:
