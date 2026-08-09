@@ -11,7 +11,17 @@ This is a public course-learning platform, not a file mirror. It makes it easy t
 - continue unfinished revision from the next chapter, privately in the current browser; and
 - explore hand-curated course connections without presenting them as official prerequisites.
 
-It deliberately publishes no lecture notes, course planners, Drive links, or learner data. Reference shelves contain bibliographic information and external book-detail links only.
+It deliberately publishes no lecture notes, course planners, learner data, Drive credentials, or course files. Reference shelves contain bibliographic information and external book-detail links only.
+
+## Course materials for invited learners
+
+Some courses can show **View course materials ↗**. This opens that course's Google Drive folder.
+
+> Available to invited learners through Google Drive. Sign in with the Google account that has been granted access.
+
+Google Drive is the sole authority for material access. A folder URL is a convenient entry point, not a credential: visitors without permission may be shown Google Drive's access-denied or access-request page. The repository never hosts or copies the materials themselves.
+
+To configure a course, add its approved Google Drive **folder** URL to `data/materials.js` only after sharing the folder with the intended Google accounts. A course without a configured URL intentionally has no materials action.
 
 ## Current direction
 
@@ -25,7 +35,7 @@ It deliberately publishes no lecture notes, course planners, Drive links, or lea
 
 - Optional sign-in to sync a visitor's own revision progress across devices.
 - Aggregated public learner counts, only after privacy and measurement rules are defined.
-- A restricted Google Drive course-material entry point, only after the owner has added an approved link and confirmed the access boundary.
+- Add approved Google Drive folder links for the remaining courses after their folders and invited-learner permissions are ready.
 
 ## Verify the public catalogue
 
@@ -70,4 +80,4 @@ The initial catalogue currently contains:
 - Do not commit course files, reference books, or Google Drive credentials.
 - Do not copy materials from Google Drive into this repository.
 - Do not expose a learner's progress or identity publicly.
-- Do not render a Google Drive course-material link until its permission model and public copy have been reviewed.
+- Only configure a Google Drive folder URL after the intended learners have been granted access in Google Drive.
