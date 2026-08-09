@@ -23,3 +23,12 @@ export function formatReference(reference) {
   const details = [reference.edition, reference.year].filter(Boolean).join(", ");
   return `${reference.id} · ${reference.authors.join(", ")} — ${reference.title}${details ? ` (${details})` : ""}`;
 }
+
+export function getConnectionsForCourse(courseId, connections) {
+  return connections.filter(({ fromId, toId }) => fromId === courseId || toId === courseId);
+}
+
+export function getConnectedCourseIds(courseId, connections) {
+  return getConnectionsForCourse(courseId, connections)
+    .map(({ fromId, toId }) => (fromId === courseId ? toId : fromId));
+}

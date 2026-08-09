@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { CATEGORIES, COURSES, REQUIRED_COURSE_IDS } from "../data/courses.js";
+import { CONNECTIONS } from "../data/connections.js";
 
 assert.equal(CATEGORIES.length, 8, "Expected eight categories");
 assert.equal(COURSES.length, 33, "Expected 33 public courses");
@@ -20,6 +21,20 @@ for (const course of COURSES) {
   }
 }
 assert.deepEqual([...ids].sort(), [...REQUIRED_COURSE_IDS].sort());
+
+const publicReferences = COURSES.flatMap(({ references }) => references);
+assert.equal(publicReferences.length, 19, "Expected every identifiable source book to be publicly cited");
+
+const connectionKeys = new Set();
+for (const { fromId, toId, reason } of CONNECTIONS) {
+  assert.ok(ids.has(fromId), `Unknown connection source: ${fromId}`);
+  assert.ok(ids.has(toId), `Unknown connection target: ${toId}`);
+  assert.notEqual(fromId, toId, "A course cannot connect to itself");
+  assert.ok(reason.trim(), "Every connection needs a public reason");
+  const key = [fromId, toId].sort().join("::");
+  assert.ok(!connectionKeys.has(key), `Duplicate connection: ${key}`);
+  connectionKeys.add(key);
+}
 
 const serialisedCourses = JSON.stringify(COURSES);
 assert.doesNotMatch(serialisedCourses, /[A-Z]:\\|drive\.google\.com|\.pdf|lecture notes/i);

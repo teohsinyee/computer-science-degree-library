@@ -2,9 +2,12 @@ import assert from "node:assert/strict";
 import {
   filterCourses,
   formatReference,
+  getConnectedCourseIds,
+  getConnectionsForCourse,
   getCourseIdFromHash,
   normalise
 } from "../assets/catalogue.js";
+import { CONNECTIONS } from "../data/connections.js";
 
 const courses = [
   {
@@ -41,4 +44,19 @@ assert.equal(
 assert.equal(
   formatReference({ id: "R02", authors: ["Ada Lovelace"], title: "Notes" }),
   "R02 · Ada Lovelace — Notes"
+);
+
+assert.deepEqual(
+  getConnectedCourseIds("CSE241", CONNECTIONS),
+  ["CSE441", "CPT341"],
+  "connections are available from the source course"
+);
+assert.deepEqual(
+  getConnectedCourseIds("CSE441", CONNECTIONS),
+  ["CSE241"],
+  "connections are available from the target course"
+);
+assert.equal(
+  getConnectionsForCourse("CSE241", CONNECTIONS)[0].reason,
+  "Software processes and quality assurance share engineering practice."
 );

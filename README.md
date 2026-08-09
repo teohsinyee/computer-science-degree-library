@@ -37,7 +37,19 @@ The initial catalogue currently contains:
 - 33 course folders across 8 categories;
 - 29 course planners;
 - 311 numbered chapter/lecture-note files; and
-- 21 `R##`-prefixed reference books.
+- 21 `R##`-prefixed reference files: 19 identifiable books that are publicly cited below, plus two restricted solution manuals that are not represented as public books.
+
+### Public reference audit
+
+| Course | Local reference IDs | Public treatment |
+| --- | --- | --- |
+| CPT212 | R01-R06 | Six identifiable books are cited. |
+| CPT316 | R01-R03 | Three identifiable books are cited. |
+| CSE241 | R12-R14, R17 | Four identifiable books are cited. R15-R16 are solution manuals and remain private. |
+| CMT427 | R01, R03 | Two identifiable books are cited. |
+| CPC251 | R04, R06 | Two identifiable books are cited. |
+| CPC453 | R17 | One identifiable book is cited. |
+| AKP302 | R01 | One identifiable book is cited. |
 
 ## Project record
 
