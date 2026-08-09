@@ -11,7 +11,7 @@ export const CATEGORIES = [
 
 export const REQUIRED_COURSE_IDS = [
   "CPT113", "CPT212", "CPT316",
-  "CAT201", "CAT304", "CPT341", "CSE241", "CSE441",
+  "CPT341", "CSE241", "CSE441",
   "CMT221", "CMT321", "CMT427", "CPC351", "CPC451",
   "CPC151", "CPC251", "CPC353", "CPC453",
   "CST232", "CST235",
@@ -51,32 +51,6 @@ export const COURSES = Object.freeze([
     { id: "R03", authors: ["Peter S. Pacheco", "Matthew Malensek"], title: "An Introduction to Parallel Programming", edition: "2nd ed.", year: 2022, bookUrl: "https://www.sciencedirect.com/book/9780128046050/an-introduction-to-parallel-programming" }
   ]),
 
-  course("CAT201", "Integrated Software Development Workshop", "Software Engineering", "Applies collaborative software-development practices in an integrated workshop.", ["Team Development", "Delivery", "Collaboration"], [
-    { title: "Course Overview", subtopics: [] },
-    { title: "Introduction to Modern Software Development", subtopics: ["Software", "Platform-specific programming language", "Platform-specific API", "System life cycle"] },
-    { title: "Web Development", subtopics: ["LAMP", "HTML", "CSS", "PHP", "Web developer constraints", "Software as a service"] },
-    { title: "Introduction to Java", subtopics: ["Compiling and executing Java", "IDE", "HelloWorld"] },
-    { title: "Basic Java", subtopics: ["Variables", "Types", "Modifiers", "Control", "Loops", "Exceptions"] },
-    { title: "Advanced Java", subtopics: ["Interface", "Abstract class", "Design patterns"] },
-    { title: "Java GUI", subtopics: ["Scene Builder", "GUI events", "GUI components"] },
-    { title: "Version Control", subtopics: ["Git", "GitHub"] },
-    { title: "Human Computer Interaction", subtopics: ["User-centred design", "Characteristics of users", "The basics of user interface design", "Usability principles", "Evaluating user interfaces"] },
-    { title: "Principles of GUI Design", subtopics: ["Structure", "Simplicity", "Visibility", "Feedback", "Tolerance", "Reuse"] },
-    { title: "Graphics and Multimedia", subtopics: ["Image", "Sound", "Video"] }
-  ]),
-  course("CAT304", "Group Innovation Project and Study for Sustainability", "Software Engineering", "Uses group project work to explore innovation and sustainability.", ["Innovation", "Sustainability", "Project Work"], [
-    { title: "Course Overview", subtopics: [] },
-    { title: "Software Development Project", subtopics: ["Project proposal", "Final report", "Project expectation", "Tips for successful project"] },
-    { title: "Sustainable Software Systems and Sustainable Development Goals", subtopics: [] },
-    { title: "Concepts of Innovation (TRIZ)", subtopics: [] },
-    { title: "Group Dynamics and Psychology", subtopics: [] },
-    { title: "Research Process and Research Methods", subtopics: [] },
-    { title: "Literature Searching and Literature Reviews", subtopics: [] },
-    { title: "Presenting in Written Form: Writing and Documentation", subtopics: [] },
-    { title: "Publishing Your Work and Publication Process", subtopics: [] },
-    { title: "Effective Presentation", subtopics: [] },
-    { title: "Seminar - Project Presentation", subtopics: [] }
-  ]),
   course("CPT341", "Software Architecture and Design", "Software Engineering", "Introduces architectural thinking, design notations, and software evolution.", ["Software Architecture", "Design Notations", "Usability"], [
     { title: "Course Overview", subtopics: [] },
     { title: "Software Architecture", subtopics: ["What is software architecture?", "Why is software architecture important?", "The many contexts of software architecture", "Architecture views", "Architecture styles"] },
