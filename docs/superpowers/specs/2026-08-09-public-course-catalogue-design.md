@@ -29,14 +29,15 @@ Keep all public course metadata in one JavaScript module. One course has:
       authors: ["Ian Sommerville"],
       title: "Software Engineering",
       edition: "10th ed.",
-      year: 2016
+      year: 2016,
+      bookUrl: "https://www.pearson.com/en-us/subject-catalog/p/software-engineering/P200000003258"
     }
   ],
   materialsUrl: null
 }
 ```
 
-`materialsUrl` remains `null` in this Issue. `references` entries require a non-empty `id`, `authors`, and `title`; `edition` and `year` are optional. Course data must be curated from the organised collection; it must never contain raw filenames, Drive credentials, course files, scans, slides, planner contents, or textbook PDFs.
+`materialsUrl` remains `null` in this Issue. `references` entries require a non-empty `id`, `authors`, `title`, and HTTPS `bookUrl`; `edition` and `year` are optional. `bookUrl` first uses a publisher's product page that lets a visitor learn about or buy the book. When that is unavailable, it uses a reputable retailer's page for that exact edition. Course data must be curated from the organised collection; it must never contain raw filenames, Drive credentials, course files, scans, slides, planner contents, or textbook PDFs.
 
 ## Page structure and navigation
 
@@ -52,6 +53,7 @@ Keep all public course metadata in one JavaScript module. One course has:
 - Category filters use the eight existing subject categories.
 - A course card and its detail view show the code as secondary metadata and the title as the primary label.
 - A course detail view shows the summary, ordered chapters, and formatted references: `R01 · Ian Sommerville — Software Engineering (10th ed., 2016)`.
+- Every reference has a visible `Find this book ↗` link that opens its `bookUrl` in a new tab. Links use no affiliate or tracking parameters and include safe external-link attributes.
 - When no search or filter result exists, show an explicit empty state.
 - The material button is omitted while `materialsUrl` is absent; it is not a disabled or broken link.
 - Use semantic controls, visible focus styles, keyboard-operable search and filters, and a readable small-screen layout.
@@ -65,7 +67,7 @@ Keep all public course metadata in one JavaScript module. One course has:
 
 ## Validation
 
-- A small Node-based data-validation script checks that every public course has a unique id, title, category, summary, at least one topic, and correctly shaped reference entries.
+- A small Node-based data-validation script checks that every public course has a unique id, title, category, summary, at least one topic, and correctly shaped reference entries with HTTPS book URLs.
 - Manual browser checks cover code/title/topic search, each category filter, hash navigation, empty state, keyboard navigation, and a narrow mobile viewport.
 - Repository checks confirm that no restricted files, Drive URLs, credentials, or local Windows paths enter the public source.
 

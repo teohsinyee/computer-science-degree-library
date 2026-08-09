@@ -26,7 +26,7 @@ Each course view includes:
 3. Public learner interest, written as `1,284 learners explored this course`.
 4. Ordered chapters generated from the numbered course notes.
 5. A checkbox for each chapter, a progress summary, and a continue-learning action.
-6. A separate, properly cited list of `R##` reference books for deeper study. Each entry shows author, book title, edition, and year where known; for example, `R01 · Ian Sommerville — Software Engineering (10th ed., 2016)`.
+6. A separate, properly cited list of `R##` reference books for deeper study. Each entry shows author, book title, edition, and year where known; for example, `R01 · Ian Sommerville — Software Engineering (10th ed., 2016)`. Every entry includes a `Find this book ↗` link to a publisher product page or reputable retailer page for that book.
 
 ## Learning state
 
