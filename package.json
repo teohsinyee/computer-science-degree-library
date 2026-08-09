@@ -3,6 +3,6 @@
   "type": "module",
   "scripts": {
     "validate:data": "node scripts/validate-data.mjs",
-    "test": "node scripts/test-catalogue.mjs"
+    "test": "node scripts/test-catalogue.mjs && node scripts/test-progress.mjs"
   }
 }
