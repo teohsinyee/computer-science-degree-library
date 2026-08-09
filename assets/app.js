@@ -6,6 +6,7 @@ const categoryFilters = document.querySelector("#category-filters");
 const resultSummary = document.querySelector("#result-summary");
 const courseGrid = document.querySelector("#course-grid");
 const courseDetail = document.querySelector("#course-detail");
+const detailBreakpoint = window.matchMedia("(max-width: 899px)");
 
 let selectedCategory = "All";
 let detailInvoker = null;
@@ -68,7 +69,7 @@ function closeDetail() {
 }
 
 function isMobileDetail() {
-  return window.matchMedia("(max-width: 899px)").matches;
+  return detailBreakpoint.matches;
 }
 
 function appendReference(referenceList, reference) {
@@ -87,7 +88,7 @@ function appendReference(referenceList, reference) {
   referenceList.append(item);
 }
 
-function renderDetail() {
+function renderDetail({ focusDetail = false } = {}) {
   const courseId = getCourseIdFromHash(window.location.hash);
   const course = COURSES.find(({ id }) => id === courseId);
   courseDetail.replaceChildren();
@@ -134,12 +135,13 @@ function renderDetail() {
     courseDetail.setAttribute("role", "dialog");
     courseDetail.setAttribute("aria-modal", "true");
     courseDetail.setAttribute("aria-labelledby", title.id);
-    closeButton.focus();
   } else {
     courseDetail.removeAttribute("role");
     courseDetail.removeAttribute("aria-modal");
     courseDetail.removeAttribute("aria-labelledby");
   }
+
+  if (isMobileDetail() || focusDetail) closeButton.focus();
 }
 
 courseDetail.addEventListener("keydown", (event) => {
@@ -168,6 +170,9 @@ courseDetail.addEventListener("keydown", (event) => {
 
 searchInput.addEventListener("input", renderCourses);
 window.addEventListener("hashchange", renderDetail);
+detailBreakpoint.addEventListener("change", () => {
+  if (courseDetail.dataset.open === "true") renderDetail({ focusDetail: true });
+});
 
 renderCategories();
 renderCourses();
