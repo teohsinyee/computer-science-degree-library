@@ -3,33 +3,86 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Course catalogue</title>
+    <meta name="description" content="A personal historical course atlas for Computer Science learning.">
+    <title>Knowledge City — Computer Science Atlas</title>
     <link rel="stylesheet" href="assets/styles.css">
   </head>
   <body>
     <header class="site-header">
-      <p class="eyebrow">Course catalogue</p>
-      <h1>Find a course. Continue learning.</h1>
-      <form class="search-form" role="search">
-        <label for="course-search">Search courses</label>
-        <input id="course-search" name="course-search" type="search" placeholder="Search by course or topic">
-      </form>
+      <a class="wordmark" href="#atlas" aria-label="Knowledge City Atlas">KNOWLEDGE CITY</a>
+      <p class="descriptor">A digital course atlas for<br>Computer Science</p>
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="#atlas" aria-current="page">Atlas</a>
+        <a href="#journal">Journal</a>
+        <button id="pathways" type="button" aria-pressed="false">Pathways</button>
+        <button id="about" type="button">About</button>
+      </nav>
+      <a class="header-search-link" href="#course-search">Search <span aria-hidden="true">⌕</span></a>
     </header>
 
-    <div class="catalogue-layout">
-      <main>
-        <nav id="category-filters" aria-label="Course categories" class="category-filters">
-          <a class="district district-foundations" href="#course-grid">Foundations</a>
-          <a class="district district-systems" href="#course-grid">Systems</a>
-          <a class="district district-data" href="#course-grid">Data</a>
-          <a class="district district-design" href="#course-grid">Design</a>
-        </nav>
-        <p id="result-summary" aria-live="polite">Courses will appear here.</p>
-        <section id="course-grid" aria-label="Courses" tabindex="0" class="course-grid"></section>
-      </main>
+    <main>
+      <section id="atlas" class="atlas-hero" aria-labelledby="atlas-title">
+        <div class="hero-copy">
+          <h1 id="atlas-title">Computer<br>Science Atlas</h1>
+          <p class="hero-note">Explore the city.<br>Connect ideas.<br>Build what matters.</p>
+          <form id="search-form" class="search-form" role="search">
+            <label class="sr-only" for="course-search">Search courses, topics, or skills</label>
+            <span class="search-mark" aria-hidden="true">⌕</span>
+            <input id="course-search" name="course-search" type="search" placeholder="Search courses, topics, or skills…" autocomplete="off">
+            <kbd aria-hidden="true">⌘ K</kbd>
+          </form>
+        </div>
 
-      <aside id="course-detail" aria-label="Course details" data-open="false" tabindex="0"></aside>
-    </div>
+        <div class="hero-map" aria-hidden="true">
+          <svg viewBox="0 0 680 320" class="hero-map-sketch" focusable="false">
+            <path class="island-outline" d="M85 152C68 102 133 51 231 46C315 2 488 37 555 78C629 101 650 164 603 210C565 260 447 274 359 253C264 290 126 269 100 218C88 195 89 176 85 152Z" />
+            <path class="map-road" d="M120 183C185 118 252 156 310 92S434 73 501 124S585 169 603 144" />
+            <path class="map-road" d="M150 213C216 202 231 255 299 217S390 168 444 225S547 220 580 179" />
+            <path class="map-road" d="M216 77C221 133 178 167 208 225M352 51C328 117 366 153 332 241M493 81C470 127 500 171 465 243" />
+            <g class="map-links">
+              <path d="M150 177L241 114L327 155L422 98L518 130L574 77" />
+              <path d="M241 114L265 222L357 203L454 235L518 130" />
+            </g>
+            <g class="map-points">
+              <circle cx="150" cy="177" r="9" class="point-coral" /><circle cx="241" cy="114" r="9" class="point-blue" /><circle cx="327" cy="155" r="10" class="point-lime" /><circle cx="422" cy="98" r="9" class="point-coral" /><circle cx="518" cy="130" r="10" class="point-purple" /><circle cx="574" cy="77" r="9" class="point-ink" /><circle cx="265" cy="222" r="9" class="point-blue" /><circle cx="357" cy="203" r="10" class="point-purple" /><circle cx="454" cy="235" r="9" class="point-ink" />
+            </g>
+          </svg>
+          <p>Every course<br>is a district.<br>Every connection<br>is a possibility.</p>
+        </div>
+      </section>
+
+      <section class="atlas-workspace" aria-label="Course atlas">
+        <nav id="category-filters" aria-label="Course districts" class="category-filters"></nav>
+        <p id="result-summary" aria-live="polite">Loading the course atlas.</p>
+        <div class="atlas-layout">
+          <section class="city-map" aria-label="Course map">
+            <svg class="map-network" viewBox="0 0 1000 620" aria-hidden="true" focusable="false">
+              <path d="M48 82H945M48 212H945M48 365H945M48 518H945M208 36V582M432 36V582M668 36V582M862 36V582" />
+              <path d="M30 153C173 115 219 157 276 101S414 87 485 135S652 206 739 150S890 89 963 142" />
+              <path d="M36 414C161 351 279 434 387 385S556 331 668 404S850 453 965 360" />
+            </svg>
+            <section id="course-grid" aria-label="Courses" tabindex="0" class="course-grid"></section>
+          </section>
+          <aside id="course-detail" class="course-detail-panel" aria-label="Course details" data-open="false" tabindex="0"></aside>
+        </div>
+      </section>
+
+      <section id="journal" class="journal-section" aria-labelledby="journal-title">
+        <div>
+          <p class="section-kicker">Your private learning state</p>
+          <h2 id="journal-title">Journal</h2>
+          <p>Pick up from the next chapter you have not finished. Progress stays in this browser.</p>
+        </div>
+        <div id="journal-content" class="journal-content" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <dialog id="about-dialog" aria-labelledby="about-title">
+      <button class="dialog-close" type="button" aria-label="Close about">×</button>
+      <p class="section-kicker">About this atlas</p>
+      <h2 id="about-title">A personal historical course library.</h2>
+      <p>Knowledge City maps high-level course learning, reference books, and private revision progress. It is not an official university catalogue and does not publish course materials.</p>
+    </dialog>
 
     <script type="module" src="assets/app.js"></script>
   </body>
