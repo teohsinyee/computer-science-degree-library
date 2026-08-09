@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 
 const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const css = await readFile(new URL("../assets/styles.css", import.meta.url), "utf8");
+const app = await readFile(new URL("../assets/app.js", import.meta.url), "utf8");
 
 const element = (id) => new RegExp(`<([\\w-]+)\\b[^>]*\\bid=["']${id}["'][^>]*>([\\s\\S]*?)<\\/\\1>`).exec(html);
 const has = (pattern, message) => assert.match(html, pattern, message);
@@ -33,3 +34,7 @@ assert.match(css, /:focus-visible\s*{[^}]*outline:/, "Missing visible focus styl
 assert.match(css, /@media \(min-width: 900px\)\s*{[\s\S]*?\.catalogue-layout\s*{\s*grid-template-columns: minmax\(0, 1fr\) minmax\(20rem, 28rem\);/, "Missing desktop layout rule");
 assert.match(css, /@media \(max-width: 899px\)\s*{[\s\S]*?\.catalogue-layout\s*{\s*display: block;/, "Missing narrow layout rule");
 assert.match(css, /#course-detail\[data-open="true"\]\s*{\s*position: fixed; inset: 0; overflow: auto;/, "Missing narrow detail overlay rule");
+
+assert.match(app, /import \{ CATEGORIES, COURSES \} from "\.\.\/data\/courses\.js";/, "App must import the catalogue data");
+assert.match(app, /import \{ filterCourses, formatReference, getCourseIdFromHash \} from "\.\/catalogue\.js";/, "App must import catalogue helpers");
+assert.doesNotMatch(app, /materialsUrl/, "App must not render material links");
