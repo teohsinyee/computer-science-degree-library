@@ -27,4 +27,9 @@ assert.match(css, /\.course-grid\s*{[\s\S]*display:\s*grid/, "Course grid must b
 assert.match(css, /\.course-detail-panel\[data-open="true"\]\s*{[\s\S]*position:\s*fixed/, "Missing mobile detail dialog rule");
 assert.match(css, /\.course-detail-panel\[data-open="true"\]\s*{[\s\S]*margin:\s*0/, "Mobile detail must not retain desktop margin");
 assert.match(css, /@media \(prefers-reduced-motion: reduce\)/, "Missing reduced-motion support");
+assert.match(app, /searchForm\.addEventListener\(["']submit["'], \(event\) => event\.preventDefault\(\)\)/, "Search must not submit and clear the query");
+assert.match(app, /button\.className = `district district-\$\{key\}`/, "District buttons need visual category modifiers");
+assert.match(app, /card\.setAttribute\(["']aria-label["']/, "Course cards need a separated accessible name");
+assert.match(app, /Related learning connections/, "Course detail must expose connection text");
+assert.match(app, /link\.rel = ["']noopener noreferrer["']/, "External book links need safe attributes");
 assert.doesNotMatch(app, /materialsUrl/, "App must not render material links");
