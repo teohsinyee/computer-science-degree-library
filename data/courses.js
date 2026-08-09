@@ -28,7 +28,7 @@ const course = (id, title, category, summary, topics, chapterTitles, references 
   topics,
   chapters: chapterTitles.map((title, index) => ({ id: String(index + 1).padStart(2, "0"), title })),
   references,
-  materialsUrl: null
+  materialsUrl: MATERIAL_URLS[id] ?? null
 });
 
 export const COURSES = Object.freeze([
@@ -95,3 +95,4 @@ export const COURSES = Object.freeze([
   course("WSU101", "Sustainability Issues, Challenges and Prospects", "Language and General", "Explores sustainable development, energy, water, and ecosystems.", ["Sustainable Development", "Energy", "Water Sustainability"], ["Sustainability Foundations", "Sustainable Development Goals", "Water Sustainability"]),
   course("WUS101", "General Studies", "Language and General", "Provides a broad foundation for interdisciplinary study and academic development.", ["Interdisciplinary Study", "Academic Skills", "General Knowledge"], ["Foundations of General Studies", "Interdisciplinary Perspectives", "Academic Development"])
 ]);
+import { MATERIAL_URLS } from "./materials.js";

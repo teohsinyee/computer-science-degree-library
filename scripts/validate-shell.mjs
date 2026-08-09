@@ -36,4 +36,6 @@ assert.match(app, /from "\.\/progress\.js"/, "App must use the private guest-pro
 assert.match(app, /checkbox\.type = ["']checkbox["']/, "Chapters need checkboxes");
 assert.match(app, /saveGuestProgress/, "Chapter changes must attempt browser-local persistence");
 assert.match(app, /Continue revision/, "Journal needs a continuation action");
-assert.doesNotMatch(app, /materialsUrl/, "App must not render material links");
+assert.match(app, /function appendMaterials\(course\)/, "App must render configured material entries");
+assert.match(app, /Available to invited learners through Google Drive/, "Material access must be explained clearly");
+assert.match(app, /View course materials/, "Material access needs a clear action");

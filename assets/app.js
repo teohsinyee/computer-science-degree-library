@@ -226,6 +226,25 @@ function appendChapters(course) {
   }
 }
 
+function appendMaterials(course) {
+  if (!course.materialsUrl) return;
+
+  appendTextElement(courseDetail, "h3", "Course materials", "detail-section-title");
+  appendTextElement(
+    courseDetail,
+    "p",
+    "Available to invited learners through Google Drive. Sign in with the Google account that has been granted access.",
+    "materials-copy"
+  );
+  const link = document.createElement("a");
+  link.className = "materials-link";
+  link.href = course.materialsUrl;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "View course materials ↗";
+  courseDetail.append(link);
+}
+
 function renderJournal() {
   journalContent.replaceChildren();
   const courses = getJournalCourses(guestProgress, COURSES);
@@ -302,6 +321,8 @@ function renderDetail({ focusDetail = false, focusSelector = null } = {}) {
   appendConnections(course);
 
   appendChapters(course);
+
+  appendMaterials(course);
 
   if (course.references.length > 0) {
     appendTextElement(courseDetail, "h3", "Reference shelf", "detail-section-title");
