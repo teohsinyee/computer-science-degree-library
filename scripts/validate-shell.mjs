@@ -34,6 +34,7 @@ assert.match(app, /Related learning connections/, "Course detail must expose con
 assert.match(app, /link\.rel = ["']noopener noreferrer["']/, "External book links need safe attributes");
 assert.match(app, /from "\.\/progress\.js"/, "App must use the private guest-progress module");
 assert.match(app, /checkbox\.type = ["']checkbox["']/, "Chapters need checkboxes");
+assert.match(app, /chapter-subtopics/, "Planner subtopics must render under their chapter");
 assert.match(app, /saveGuestProgress/, "Chapter changes must attempt browser-local persistence");
 assert.match(app, /Continue revision/, "Journal needs a continuation action");
 assert.match(app, /function appendMaterials\(course\)/, "App must render configured material entries");

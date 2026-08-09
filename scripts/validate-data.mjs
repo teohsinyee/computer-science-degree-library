@@ -24,6 +24,24 @@ for (const course of COURSES) {
 }
 assert.deepEqual([...ids].sort(), [...REQUIRED_COURSE_IDS].sort());
 
+const plannerChapterCounts = {
+  CAT201: 11,
+  CAT304: 11,
+  CPT341: 7,
+  CSE241: 14,
+  CSE441: 8
+};
+for (const [courseId, expectedChapterCount] of Object.entries(plannerChapterCounts)) {
+  const course = COURSES.find(({ id }) => id === courseId);
+  assert.equal(course.chapters.length, expectedChapterCount, `${courseId} must use its course-planner topic count`);
+  assert.ok(course.chapters.every(({ subtopics }) => Array.isArray(subtopics)), `${courseId} chapters must preserve planner subtopics`);
+}
+assert.deepEqual(
+  COURSES.find(({ id }) => id === "CSE241").chapters[0].subtopics,
+  ["Professional software development", "Software engineering ethics"],
+  "CSE241 must preserve the subtopics from its course planner"
+);
+
 for (const [courseId, materialsUrl] of Object.entries(MATERIAL_URLS)) {
   assert.ok(ids.has(courseId), `Unknown materials course: ${courseId}`);
   assert.match(materialsUrl, /^https:\/\/drive\.google\.com\/drive\/folders\/[\w-]+/, `Invalid Google Drive folder URL for ${courseId}`);

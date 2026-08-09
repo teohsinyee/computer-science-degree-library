@@ -216,6 +216,12 @@ function appendChapters(course) {
     text.textContent = `${chapter.id} · ${chapter.title}`;
     label.append(checkbox, text);
     item.append(label);
+    if (chapter.subtopics.length > 0) {
+      const subtopics = document.createElement("ul");
+      subtopics.className = "chapter-subtopics";
+      for (const subtopic of chapter.subtopics) appendTextElement(subtopics, "li", subtopic);
+      item.append(subtopics);
+    }
     chapters.append(item);
   }
   courseDetail.append(chapters);
