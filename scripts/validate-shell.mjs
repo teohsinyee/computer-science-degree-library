@@ -30,10 +30,11 @@ assert.match(css, /@media \(prefers-reduced-motion: reduce\)/, "Missing reduced-
 assert.match(app, /searchForm\.addEventListener\(["']submit["'], \(event\) => event\.preventDefault\(\)\)/, "Search must not submit and clear the query");
 assert.match(app, /button\.className = `district district-\$\{key\}`/, "District buttons need visual category modifiers");
 assert.match(app, /card\.setAttribute\(["']aria-label["']/, "Course cards need a separated accessible name");
-assert.match(app, /Related learning connections/, "Course detail must expose connection text");
+assert.doesNotMatch(app, /Related learning connections/, "Course detail must not show low-value connection copy");
 assert.match(app, /link\.rel = ["']noopener noreferrer["']/, "External book links need safe attributes");
 assert.match(app, /from "\.\/progress\.js"/, "App must use the private guest-progress module");
 assert.match(app, /checkbox\.type = ["']checkbox["']/, "Chapters need checkboxes");
+assert.match(app, /chapter-subtopics/, "Planner subtopics must render under their chapter");
 assert.match(app, /saveGuestProgress/, "Chapter changes must attempt browser-local persistence");
 assert.match(app, /Continue revision/, "Journal needs a continuation action");
 assert.match(app, /function appendMaterials\(course\)/, "App must render configured material entries");

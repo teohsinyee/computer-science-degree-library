@@ -11,7 +11,7 @@ export const CATEGORIES = [
 
 export const REQUIRED_COURSE_IDS = [
   "CPT113", "CPT212", "CPT316",
-  "CAT201", "CAT304", "CPT341", "CSE241", "CSE441",
+  "CPT341", "CSE241", "CSE441",
   "CMT221", "CMT321", "CMT427", "CPC351", "CPC451",
   "CPC151", "CPC251", "CPC353", "CPC453",
   "CST232", "CST235",
@@ -26,7 +26,11 @@ const course = (id, title, category, summary, topics, chapterTitles, references 
   category,
   summary,
   topics,
-  chapters: chapterTitles.map((title, index) => ({ id: String(index + 1).padStart(2, "0"), title })),
+  chapters: chapterTitles.map((chapter, index) => ({
+    id: String(index + 1).padStart(2, "0"),
+    title: typeof chapter === "string" ? chapter : chapter.title,
+    subtopics: typeof chapter === "string" ? [] : chapter.subtopics
+  })),
   references,
   materialsUrl: MATERIAL_URLS[id] ?? null
 });
@@ -47,16 +51,46 @@ export const COURSES = Object.freeze([
     { id: "R03", authors: ["Peter S. Pacheco", "Matthew Malensek"], title: "An Introduction to Parallel Programming", edition: "2nd ed.", year: 2022, bookUrl: "https://www.sciencedirect.com/book/9780128046050/an-introduction-to-parallel-programming" }
   ]),
 
-  course("CAT201", "Integrated Software Development Workshop", "Software Engineering", "Applies collaborative software-development practices in an integrated workshop.", ["Team Development", "Delivery", "Collaboration"], ["Project Planning", "Incremental Delivery", "Project Review"]),
-  course("CAT304", "Group Innovation Project and Study for Sustainability", "Software Engineering", "Uses group project work to explore innovation and sustainability.", ["Innovation", "Sustainability", "Project Work"], ["Problem Framing", "Solution Development", "Sustainability Review"]),
-  course("CPT341", "Software Architecture and Design", "Software Engineering", "Introduces architectural thinking, design notations, and software evolution.", ["Software Architecture", "Design Notations", "Usability"], ["Architecture Fundamentals", "Design Notations", "Architecture Evolution"]),
-  course("CSE241", "Foundations of Software Engineering", "Software Engineering", "Introduces core software-engineering practices from process through evolution.", ["Software Processes", "Requirements", "Architecture"], ["Software Processes", "Requirements Engineering", "Software Evolution"], [
+  course("CPT341", "Software Architecture and Design", "Software Engineering", "Introduces architectural thinking, design notations, and software evolution.", ["Software Architecture", "Design Notations", "Usability"], [
+    { title: "Course Overview", subtopics: [] },
+    { title: "Software Architecture", subtopics: ["What is software architecture?", "Why is software architecture important?", "The many contexts of software architecture", "Architecture views", "Architecture styles"] },
+    { title: "Software Architecture Styles and Patterns", subtopics: ["Module views", "A tour of some module styles", "Decomposition style", "Uses style", "Generalization style", "Layered style", "Aspects style", "Data model", "Architectural patterns"] },
+    { title: "Software Design Issues", subtopics: ["Software design fundamentals", "Other issues in software design"] },
+    { title: "Software Design Quality Analysis and Evaluation", subtopics: ["Software quality attributes", "Software quality analysis and evaluation techniques", "Software design measures"] },
+    { title: "Software Design Notations", subtopics: ["Structural descriptions (static views)", "Behavioral descriptions (dynamic views)"] },
+    { title: "Software Design Strategies and Methods", subtopics: ["General strategies", "Design methods"] }
+  ]),
+  course("CSE241", "Foundations of Software Engineering", "Software Engineering", "Introduces core software-engineering practices from process through evolution.", ["Software Processes", "Requirements", "Architecture"], [
+    { title: "Course Overview and Introduction to Software Engineering", subtopics: ["Professional software development", "Software engineering ethics"] },
+    { title: "Software Processes", subtopics: ["Software process models", "Process activities", "Coping with change", "Process improvement"] },
+    { title: "Agile Software Development", subtopics: ["Agile methods", "Agile development technique", "Agile project management", "Scaling Agile methods"] },
+    { title: "Requirements Engineering", subtopics: ["Functional and non-functional requirements", "Requirements engineering process", "Requirements", "Requirements validation", "Requirements change"] },
+    { title: "System Modeling", subtopics: ["Context models", "Interaction models", "Structural models", "Behavioral models", "Model-driven architectures"] },
+    { title: "Architectural Design and Implementation I", subtopics: ["Architectural design decisions", "Architectural views and patterns", "Application architectures", "Object-oriented design using UML"] },
+    { title: "Architectural Design and Implementation II", subtopics: ["Implementation issues", "Open-source development"] },
+    { title: "Software Testing", subtopics: ["Development testing", "Test-driven development", "Release testing", "User testing"] },
+    { title: "Software Evolution", subtopics: ["Evolution processes", "Legacy system", "System maintenance"] },
+    { title: "Project Management", subtopics: ["Risk management", "Managing people", "Teamwork"] },
+    { title: "Project Planning", subtopics: ["Software pricing", "Maintenance", "Plan-driven development and project scheduling", "Agile planning", "Estimation techniques", "Cost modeling"] },
+    { title: "Quality Management", subtopics: ["Software quality", "Software standards", "Reviews and inspections", "Quality management and agile development", "Software measurement"] },
+    { title: "Configuration Management", subtopics: ["Version management", "System building", "Change management", "Release management"] },
+    { title: "Project and Project Report", subtopics: [] }
+  ], [
     { id: "R12", authors: ["Ian Sommerville"], title: "Software Engineering", edition: "10th ed.", year: 2016, bookUrl: "https://www.pearson.com/en-gb/subject-catalog/p/software-engineering-global-edition/P200000005464" },
     { id: "R13", authors: ["Capers Jones"], title: "Software Engineering Best Practices", edition: "1st ed.", year: 2010, bookUrl: "https://www.mheducation.com/highered/mhp/product/software-engineering-best-practices.html" },
     { id: "R14", authors: ["John W. Satzinger", "Robert B. Jackson", "Stephen D. Burd"], title: "Systems Analysis and Design in a Changing World", edition: "6th ed.", year: 2011, bookUrl: "https://www.campusbooks.com/books/9781133713371-systems-analysis-and-design-in-a-changing-world" },
     { id: "R17", authors: ["Thomas M. Pigoski"], title: "Practical Software Maintenance: Best Practices for Managing Your Software Investment", year: 1997, bookUrl: "https://www.amazon.com/dp/0471170011" }
   ]),
-  course("CSE441", "Software Process and Quality Assurance", "Software Engineering", "Examines software processes and practices for assuring product quality.", ["Process Improvement", "Quality Assurance", "Testing"], ["Software Processes", "Quality Planning", "Quality Assurance"]),
+  course("CSE441", "Software Process and Quality Assurance", "Software Engineering", "Examines software processes and practices for assuring product quality.", ["Process Improvement", "Quality Assurance", "Testing"], [
+    { title: "Course Overview and Foundations", subtopics: ["Background", "The software process ecosystem", "Terminology and basic concepts"] },
+    { title: "Software Process Definition and Modelling", subtopics: ["Notations for modelling the interaction between processes"] },
+    { title: "Software Processes in the Software Product Life Cycle", subtopics: ["Basic software development life cycle models", "Methodology driven life cycle and process models", "Agile and lean development processes and methodologies", "Maturity models"] },
+    { title: "Governance and Management of Software Processes", subtopics: ["Process infrastructure", "Process definition", "Process selection and tailoring", "Process deployment", "Quality assurance"] },
+    { title: "Software Process Assessment and Improvement", subtopics: ["Quality of software processes and software process models", "Software process improvement", "Quality management", "Maturity models"] },
+    { title: "Software and Software Process Measurement", subtopics: ["Why measure?", "Implementing and deploying measures and measurement systems", "Product, project and process metrics", "Measurement and agile methods"] },
+    { title: "Tool Support for Software Processes", subtopics: ["Support for process modelling and process management", "Tool support for process enactment", "Compliance and quality assurance tools in process enactment"] },
+    { title: "Selected Current Trends in Software Processes", subtopics: ["Process intelligence and process mining", "DevOps"] }
+  ]),
 
   course("CMT221", "Database Organisation and Design", "Data and Databases", "Covers database modelling, design, SQL, and administration.", ["Data Modelling", "SQL", "Database Security"], ["Database Systems", "Relational Design", "Database Administration"]),
   course("CMT321", "Management and Engineering of Databases", "Data and Databases", "Examines database engineering and management in organisational settings.", ["Database Engineering", "Administration", "Data Management"], ["Database Planning", "Database Operations", "Database Governance"]),

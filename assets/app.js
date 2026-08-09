@@ -4,7 +4,6 @@ import {
   filterCourses,
   formatReference,
   getConnectedCourseIds,
-  getConnectionsForCourse,
   getCourseIdFromHash
 } from "./catalogue.js";
 import {
@@ -160,29 +159,6 @@ function appendMetric(metrics, value, label) {
   metrics.append(metric);
 }
 
-function appendConnections(course) {
-  const connections = getConnectionsForCourse(course.id, CONNECTIONS);
-  if (connections.length === 0) return;
-
-  appendTextElement(courseDetail, "h3", "Related learning connections", "detail-section-title");
-  const list = document.createElement("ul");
-  list.className = "connection-list";
-  for (const connection of connections) {
-    const relatedId = connection.fromId === course.id ? connection.toId : connection.fromId;
-    const relatedCourse = COURSES.find(({ id }) => id === relatedId);
-    if (!relatedCourse) continue;
-    const item = document.createElement("li");
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "connection-link";
-    button.textContent = `${relatedCourse.title} · ${connection.reason}`;
-    button.addEventListener("click", () => selectCourse(relatedCourse));
-    item.append(button);
-    list.append(item);
-  }
-  courseDetail.append(list);
-}
-
 function saveProgress() {
   try {
     saveGuestProgress(guestStorage, guestProgress);
@@ -216,6 +192,12 @@ function appendChapters(course) {
     text.textContent = `${chapter.id} · ${chapter.title}`;
     label.append(checkbox, text);
     item.append(label);
+    if (chapter.subtopics.length > 0) {
+      const subtopics = document.createElement("ul");
+      subtopics.className = "chapter-subtopics";
+      for (const subtopic of chapter.subtopics) appendTextElement(subtopics, "li", subtopic);
+      item.append(subtopics);
+    }
     chapters.append(item);
   }
   courseDetail.append(chapters);
@@ -317,8 +299,6 @@ function renderDetail({ focusDetail = false, focusSelector = null } = {}) {
   topics.className = "topic-list";
   for (const topic of course.topics) appendTextElement(topics, "li", topic);
   courseDetail.append(topics);
-
-  appendConnections(course);
 
   appendChapters(course);
 

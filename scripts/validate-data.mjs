@@ -5,7 +5,7 @@ import { CONNECTIONS } from "../data/connections.js";
 import { MATERIAL_URLS } from "../data/materials.js";
 
 assert.equal(CATEGORIES.length, 8, "Expected eight categories");
-assert.equal(COURSES.length, 33, "Expected 33 public courses");
+assert.equal(COURSES.length, 31, "Courses with planner-only folders must not appear in the public catalogue");
 
 const ids = new Set();
 for (const course of COURSES) {
@@ -23,6 +23,23 @@ for (const course of COURSES) {
   }
 }
 assert.deepEqual([...ids].sort(), [...REQUIRED_COURSE_IDS].sort());
+assert.ok(!ids.has("CAT201") && !ids.has("CAT304"), "Planner-only courses must be excluded from the public catalogue");
+
+const plannerChapterCounts = {
+  CPT341: 7,
+  CSE241: 14,
+  CSE441: 8
+};
+for (const [courseId, expectedChapterCount] of Object.entries(plannerChapterCounts)) {
+  const course = COURSES.find(({ id }) => id === courseId);
+  assert.equal(course.chapters.length, expectedChapterCount, `${courseId} must use its course-planner topic count`);
+  assert.ok(course.chapters.every(({ subtopics }) => Array.isArray(subtopics)), `${courseId} chapters must preserve planner subtopics`);
+}
+assert.deepEqual(
+  COURSES.find(({ id }) => id === "CSE241").chapters[0].subtopics,
+  ["Professional software development", "Software engineering ethics"],
+  "CSE241 must preserve the subtopics from its course planner"
+);
 
 for (const [courseId, materialsUrl] of Object.entries(MATERIAL_URLS)) {
   assert.ok(ids.has(courseId), `Unknown materials course: ${courseId}`);
@@ -32,7 +49,8 @@ for (const [courseId, materialsUrl] of Object.entries(MATERIAL_URLS)) {
 const publicReferences = COURSES.flatMap(({ references }) => references);
 assert.equal(publicReferences.length, 19, "Expected every identifiable source book to be publicly cited");
 
-assert.equal(Object.keys(MATERIAL_URLS).length, 30, "Expected a Drive folder for every discovered course folder");
+assert.equal(Object.keys(MATERIAL_URLS).length, 28, "Planner-only courses must not expose Drive links");
+assert.ok(!MATERIAL_URLS.CAT201 && !MATERIAL_URLS.CAT304, "Planner-only courses must not expose Drive links");
 assert.deepEqual(
   REQUIRED_COURSE_IDS.filter((courseId) => !MATERIAL_URLS[courseId]).sort(),
   ["ACCOUNTING", "WCC110", "WUS101"],
