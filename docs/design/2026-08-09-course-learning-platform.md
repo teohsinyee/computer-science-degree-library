@@ -8,6 +8,8 @@ The platform is a neutral, public course-learning library. It should help a visi
 
 The interface uses a bright editorial map language: warm white background, fine map/grid texture, dark typography, and colour-coded subject districts. It must feel contemporary rather than like an institutional course catalogue.
 
+The editable visual exploration is in [Figma](https://www.figma.com/design/u7rAMXSB9IcbFpzNocTm8Y). It currently includes desktop Explore and Course views.
+
 ## Explore experience
 
 - Search by course code, course name, or topic.

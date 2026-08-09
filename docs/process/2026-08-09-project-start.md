@@ -34,6 +34,14 @@ Two visual explorations were created:
 
 The light version was chosen. The visual language may remain map-inspired, but the user-facing product must not use names such as “Computer Science Atlas” or “Knowledge City”.
 
+## Editable Figma mockup
+
+An editable Figma design file was created on 2026-08-09:
+
+- [Computer Science Degree Library — Mockup](https://www.figma.com/design/u7rAMXSB9IcbFpzNocTm8Y)
+
+It contains a small local token set, reusable course UI components, an `Explore — Desktop` screen, and a `Course — Desktop` screen. The Figma Starter plan reached its MCP call limit while validating the final course-page screenshot; the file itself remains editable in Figma.
+
 ## Current content state
 
 The organised course collection has 33 courses in 8 subject categories. Lecture notes are flattened into each course folder, numbered by reading order. Reference books begin with `R##`.
