@@ -15,3 +15,8 @@ assert.match(css, /\.course-card\s*{[\s\S]*border:/);
 assert.match(css, /\.map-network/);
 assert.match(css, /@media \(max-width: 899px\)/);
 assert.match(css, /prefers-reduced-motion/);
+assert.match(css, /\.site-header\s*{[\s\S]*position:\s*sticky/, "Header must remain available while scrolling");
+assert.match(css, /\.site-header\s*{[\s\S]*z-index:/, "Sticky header needs a stable stacking layer");
+assert.match(css, /\.category-filters\s*{[\s\S]*display:\s*flex/, "District controls must use a non-overlapping flex layout");
+assert.match(css, /\.district\s*{[\s\S]*flex:\s*0 0 auto/, "Each district control must retain its own width");
+assert.match(css, /#atlas, #journal\s*{[\s\S]*scroll-margin-top:/, "Anchors must clear the sticky header");
