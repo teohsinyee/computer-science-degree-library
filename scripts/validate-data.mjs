@@ -32,6 +32,13 @@ for (const [courseId, materialsUrl] of Object.entries(MATERIAL_URLS)) {
 const publicReferences = COURSES.flatMap(({ references }) => references);
 assert.equal(publicReferences.length, 19, "Expected every identifiable source book to be publicly cited");
 
+assert.equal(Object.keys(MATERIAL_URLS).length, 30, "Expected a Drive folder for every discovered course folder");
+assert.deepEqual(
+  REQUIRED_COURSE_IDS.filter((courseId) => !MATERIAL_URLS[courseId]).sort(),
+  ["ACCOUNTING", "WCC110", "WUS101"],
+  "Only courses without a discovered Drive folder may omit a materials URL"
+);
+
 const connectionKeys = new Set();
 for (const { fromId, toId, reason } of CONNECTIONS) {
   assert.ok(ids.has(fromId), `Unknown connection source: ${fromId}`);
