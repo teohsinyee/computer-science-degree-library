@@ -7,6 +7,13 @@ import {
   getConnectionsForCourse,
   getCourseIdFromHash
 } from "./catalogue.js";
+import {
+  getCourseProgress,
+  getJournalCourses,
+  loadGuestProgress,
+  saveGuestProgress,
+  toggleChapter
+} from "./progress.js";
 
 const atlas = document.querySelector("#atlas");
 const searchForm = document.querySelector("#search-form");
@@ -15,6 +22,7 @@ const categoryFilters = document.querySelector("#category-filters");
 const resultSummary = document.querySelector("#result-summary");
 const courseGrid = document.querySelector("#course-grid");
 const courseDetail = document.querySelector("#course-detail");
+const journalContent = document.querySelector("#journal-content");
 const pathwaysButton = document.querySelector("#pathways");
 const aboutButton = document.querySelector("#about");
 const aboutDialog = document.querySelector("#about-dialog");
@@ -24,6 +32,18 @@ let selectedCategory = "All";
 let detailInvoker = null;
 let wasDetailOpen = false;
 let pathwaysEnabled = false;
+let progressSaveNotice = "";
+
+function getBrowserStorage() {
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
+const guestStorage = getBrowserStorage();
+let guestProgress = loadGuestProgress(guestStorage);
 
 function categoryKey(category) {
   return category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -163,7 +183,76 @@ function appendConnections(course) {
   courseDetail.append(list);
 }
 
-function renderDetail({ focusDetail = false } = {}) {
+function saveProgress() {
+  try {
+    saveGuestProgress(guestStorage, guestProgress);
+    progressSaveNotice = "";
+  } catch {
+    progressSaveNotice = "Progress will remain for this tab, but this browser could not save it.";
+  }
+}
+
+function appendChapters(course) {
+  appendTextElement(courseDetail, "h3", "Chapters", "detail-section-title");
+  const chapters = document.createElement("ol");
+  chapters.className = "chapter-list";
+  const completedChapterIds = new Set(guestProgress.courses[course.id]?.completedChapterIds ?? []);
+
+  for (const chapter of course.chapters) {
+    const item = document.createElement("li");
+    const label = document.createElement("label");
+    label.className = "chapter-label";
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = `chapter-${course.id}-${chapter.id}`;
+    checkbox.checked = completedChapterIds.has(chapter.id);
+    checkbox.addEventListener("change", () => {
+      guestProgress = toggleChapter(guestProgress, course.id, chapter.id, new Date().toISOString());
+      saveProgress();
+      renderDetail({ focusSelector: `#chapter-${course.id}-${chapter.id}` });
+      renderJournal();
+    });
+    const text = document.createElement("span");
+    text.textContent = `${chapter.id} · ${chapter.title}`;
+    label.append(checkbox, text);
+    item.append(label);
+    chapters.append(item);
+  }
+  courseDetail.append(chapters);
+
+  if (progressSaveNotice) {
+    const notice = appendTextElement(courseDetail, "p", progressSaveNotice, "progress-notice");
+    notice.setAttribute("role", "status");
+  }
+}
+
+function renderJournal() {
+  journalContent.replaceChildren();
+  const courses = getJournalCourses(guestProgress, COURSES);
+  if (courses.length === 0) {
+    appendTextElement(journalContent, "p", "No revision in progress yet. Choose a course in Atlas and tick a chapter when you finish it.", "journal-empty");
+    return;
+  }
+
+  for (const course of courses) {
+    const entry = document.createElement("article");
+    entry.className = "journal-entry";
+    appendTextElement(entry, "p", course.id, "journal-course-id");
+    appendTextElement(entry, "h3", course.title);
+    appendTextElement(entry, "p", `${course.completedCount}/${course.totalCount} chapters complete · next: ${course.nextChapterId}`, "journal-progress");
+    const continueButton = document.createElement("button");
+    continueButton.type = "button";
+    continueButton.textContent = "Continue revision";
+    continueButton.addEventListener("click", () => {
+      document.querySelector("#atlas").scrollIntoView({ behavior: "smooth" });
+      selectCourse(course);
+    });
+    entry.append(continueButton);
+    journalContent.append(entry);
+  }
+}
+
+function renderDetail({ focusDetail = false, focusSelector = null } = {}) {
   const courseId = selectedCourseId();
   const course = COURSES.find(({ id }) => id === courseId);
   courseDetail.replaceChildren();
@@ -198,9 +287,10 @@ function renderDetail({ focusDetail = false } = {}) {
 
   const metrics = document.createElement("div");
   metrics.className = "course-metrics";
+  const progress = getCourseProgress(guestProgress, course);
   appendMetric(metrics, String(course.chapters.length), "chapters");
   appendMetric(metrics, String(course.references.length), "reference books");
-  appendMetric(metrics, String(course.topics.length), "key topics");
+  appendMetric(metrics, `${progress.completedCount}/${progress.totalCount}`, "revision");
   courseDetail.append(metrics);
 
   appendTextElement(courseDetail, "h3", "Topics", "detail-section-title");
@@ -211,11 +301,7 @@ function renderDetail({ focusDetail = false } = {}) {
 
   appendConnections(course);
 
-  appendTextElement(courseDetail, "h3", "Chapters", "detail-section-title");
-  const chapters = document.createElement("ol");
-  chapters.className = "chapter-list";
-  for (const chapter of course.chapters) appendTextElement(chapters, "li", `${chapter.id} · ${chapter.title}`);
-  courseDetail.append(chapters);
+  appendChapters(course);
 
   if (course.references.length > 0) {
     appendTextElement(courseDetail, "h3", "Reference shelf", "detail-section-title");
@@ -235,7 +321,8 @@ function renderDetail({ focusDetail = false } = {}) {
     courseDetail.removeAttribute("aria-labelledby");
   }
 
-  if (isMobileDetail() || focusDetail) closeButton.focus();
+  if (focusSelector) courseDetail.querySelector(focusSelector)?.focus();
+  else if (isMobileDetail() || focusDetail) closeButton.focus();
 }
 
 courseDetail.addEventListener("keydown", (event) => {
@@ -287,3 +374,4 @@ createCategoryControls();
 updateCategoryControls();
 renderCourses();
 renderDetail();
+renderJournal();

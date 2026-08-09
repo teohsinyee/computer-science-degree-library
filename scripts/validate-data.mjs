@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { CATEGORIES, COURSES, REQUIRED_COURSE_IDS } from "../data/courses.js";
 import { CONNECTIONS } from "../data/connections.js";
 
@@ -38,3 +39,15 @@ for (const { fromId, toId, reason } of CONNECTIONS) {
 
 const serialisedCourses = JSON.stringify(COURSES);
 assert.doesNotMatch(serialisedCourses, /[A-Z]:\\|drive\.google\.com|\.pdf|lecture notes/i);
+
+const publicRuntimeSources = await Promise.all([
+  "index.html",
+  "assets/app.js",
+  "data/courses.js",
+  "data/connections.js"
+].map((file) => readFile(new URL(`../${file}`, import.meta.url), "utf8")));
+assert.doesNotMatch(
+  publicRuntimeSources.join("\n"),
+  /[A-Z]:\\|drive\.google\.com|\.pdf|lecture notes|course planner/i,
+  "Public runtime sources must not expose restricted material locations or names"
+);

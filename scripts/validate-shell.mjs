@@ -32,4 +32,8 @@ assert.match(app, /button\.className = `district district-\$\{key\}`/, "District
 assert.match(app, /card\.setAttribute\(["']aria-label["']/, "Course cards need a separated accessible name");
 assert.match(app, /Related learning connections/, "Course detail must expose connection text");
 assert.match(app, /link\.rel = ["']noopener noreferrer["']/, "External book links need safe attributes");
+assert.match(app, /from "\.\/progress\.js"/, "App must use the private guest-progress module");
+assert.match(app, /checkbox\.type = ["']checkbox["']/, "Chapters need checkboxes");
+assert.match(app, /saveGuestProgress/, "Chapter changes must attempt browser-local persistence");
+assert.match(app, /Continue revision/, "Journal needs a continuation action");
 assert.doesNotMatch(app, /materialsUrl/, "App must not render material links");
