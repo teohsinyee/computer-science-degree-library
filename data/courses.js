@@ -11,7 +11,7 @@ export const CATEGORIES = [
 
 export const REQUIRED_COURSE_IDS = [
   "CPT113", "CPT212", "CPT316",
-  "CPT341", "CSE241", "CSE441",
+  "CPT341", "CSE241", "CSE441", "CSE442",
   "CMT221", "CMT321", "CMT427", "CPC351", "CPC451",
   "CPC151", "CPC251", "CPC353", "CPC453",
   "CST232", "CST235",
@@ -90,6 +90,15 @@ export const COURSES = Object.freeze([
     { title: "Software and Software Process Measurement", subtopics: ["Why measure?", "Implementing and deploying measures and measurement systems", "Product, project and process metrics", "Measurement and agile methods"] },
     { title: "Tool Support for Software Processes", subtopics: ["Support for process modelling and process management", "Tool support for process enactment", "Compliance and quality assurance tools in process enactment"] },
     { title: "Selected Current Trends in Software Processes", subtopics: ["Process intelligence and process mining", "DevOps"] }
+  ]),
+  course("CSE442", "Software Testing", "Software Engineering", "Covers software-testing fundamentals, test design techniques, management, and supporting tools.", ["Test Design", "Test Management", "Test Tools"], [
+    { title: "Fundamentals of Testing", subtopics: ["Principles of testing", "Fundamental test process", "Test cases, expected results and test oracles", "Psychology of testing", "Ethics of testing"] },
+    { title: "Testing Throughout the Software Life Cycle", subtopics: ["Testing in software development models", "Test levels", "Testing of new product versions", "Overview of test types"] },
+    { title: "Static Testing", subtopics: ["Fundamentals", "Reviews", "Static analysis", "Control and data flow analysis", "Metrics"] },
+    { title: "Dynamic Testing - Black Box", subtopics: ["Idea of black-box test design techniques", "Equivalence partitioning", "Boundary value analysis", "State transition testing", "Decision table testing", "Further black-box test design techniques"] },
+    { title: "Dynamic Testing - White Box", subtopics: ["Concept of white-box test design techniques", "Control flow-based testing", "Experience-based testing", "Choice of test design techniques"] },
+    { title: "Test Management", subtopics: ["Test organization", "Test planning and estimation", "Test progress monitoring and control", "Configuration management", "Risk and testing", "Incident management"] },
+    { title: "Tool Support for Testing", subtopics: ["Types of test tools", "Effective use of tools", "Choice and introduction of test tools into an organization"] }
   ]),
 
   course("CMT221", "Database Organisation and Design", "Data and Databases", "Covers database modelling, design, SQL, and administration.", ["Data Modelling", "SQL", "Database Security"], ["Database Systems", "Relational Design", "Database Administration"]),
