@@ -11,7 +11,7 @@ export const CATEGORIES = [
 
 export const REQUIRED_COURSE_IDS = [
   "CPT113", "CPT212", "CPT316",
-  "CPT341", "CSE241", "CSE441", "CSE442",
+  "CPT341", "CSE241", "CSE441", "CSE442", "CMT425",
   "CMT221", "CMT321", "CMT427", "CPC351", "CPC451",
   "CPC151", "CPC251", "CPC353", "CPC453",
   "CST232", "CST235",
@@ -99,6 +99,22 @@ export const COURSES = Object.freeze([
     { title: "Dynamic Testing - White Box", subtopics: ["Concept of white-box test design techniques", "Control flow-based testing", "Experience-based testing", "Choice of test design techniques"] },
     { title: "Test Management", subtopics: ["Test organization", "Test planning and estimation", "Test progress monitoring and control", "Configuration management", "Risk and testing", "Incident management"] },
     { title: "Tool Support for Testing", subtopics: ["Types of test tools", "Effective use of tools", "Choice and introduction of test tools into an organization"] }
+  ]),
+  course("CMT425", "Enterprise Architecture and Systems", "Software Engineering", "Explores enterprise architecture concepts, practices, artifacts, and organizational roles for aligning business and IT.", ["Enterprise Architecture", "Business-IT Alignment", "Architecture Practice"], [
+    { title: "Introduction to Enterprise Architecture", subtopics: ["The importance of IT in business", "Modern organizations as socio-technical systems of business and IT", "Business and IT alignment", "Enterprise architecture as a solution to the alignment problem"] },
+    { title: "The Concept of Enterprise Architecture", subtopics: ["Enterprise architecture concept", "EA for improving business and IT alignment", "EA artifacts and their essential properties", "Role of architects in EA practices"] },
+    { title: "The Role of Enterprise Architecture Practice", subtopics: ["Benefits of practicing enterprise architecture", "Historical origin of EA and modern EA best practices", "What an EA practice is not"] },
+    { title: "Processes of Enterprise Architecture Practice", subtopics: ["Six general types of EA artifacts (CSVLOD)", "Three core EA-related processes", "Coordination and synergy between processes", "High-level process view of an EA practice"] },
+    { title: "IT Initiatives and Enterprise Architecture", subtopics: ["Role of IT initiatives in EA practice", "Five types of IT initiatives", "Flow of IT initiatives through EA processes"] },
+    { title: "Enterprise Architecture Artifacts - CSVLOD Model", subtopics: ["Two dimensions for classifying EA artifacts", "Six EA artifact types in the CSVLOD model"] },
+    { title: "Considerations and Standards in Enterprise Architecture", subtopics: ["Properties and subtypes of Considerations", "Principles, policies, conceptual data models, analytical reports and direction statements", "Properties and subtypes of Standards", "Technology reference models, guidelines, patterns, IT principles and logical data models"] },
+    { title: "Visions in Enterprise Architecture", subtopics: ["Properties and use of Visions", "Business capability models, roadmaps, target states, value chains and context diagrams", "Practical use of Visions"] },
+    { title: "Landscape in Enterprise Architecture", subtopics: ["Properties and use of Landscapes", "Landscape diagrams, inventories, enterprise system portfolios and IT roadmaps", "Practical use of Landscapes"] },
+    { title: "Outlines in Enterprise Architecture", subtopics: ["Properties and use of Outlines", "Solution overviews, option assessments and initiative proposals", "Practical use of Outlines"] },
+    { title: "Designs in Enterprise Architecture", subtopics: ["Properties and use of Designs", "Solution designs and preliminary solution designs", "Practical use of Designs"] },
+    { title: "Architects in Enterprise Architecture Practice", subtopics: ["Skills and desirable qualities of architects", "Five common architect archetypes", "Organizational mapping of architect archetypes", "Architect roles in EA-related processes"] },
+    { title: "Architecture Functions in Organizations", subtopics: ["Role and position of architecture functions", "Structure and composition of architecture functions", "Architecture governance bodies and committees", "Exemption and escalation procedures"] },
+    { title: "The Future of Enterprise Architecture", subtopics: [] }
   ]),
 
   course("CMT221", "Database Organisation and Design", "Data and Databases", "Covers database modelling, design, SQL, and administration.", ["Data Modelling", "SQL", "Database Security"], ["Database Systems", "Relational Design", "Database Administration"]),

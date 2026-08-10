@@ -8,6 +8,7 @@ export const MATERIAL_URLS = Object.freeze({
   CSE241: "https://drive.google.com/drive/folders/1D_Fp1B_ArwHi2N9UcKe6nEjA_mgQJgaX",
   CSE441: "https://drive.google.com/drive/folders/1x0eSaD49uvdx0lBZJ0JpxEtULwQ6jHIY",
   CSE442: "https://drive.google.com/drive/folders/1n5mSSHQMmOz_uANNmx0wpPXA_yGWkCqX",
+  CMT425: "https://drive.google.com/drive/folders/1Y8V_QAZIY5SW7PO-LikySp6tyfvmyX4W",
   CMT221: "https://drive.google.com/drive/folders/145ffolYCDbO8-qPyC5Md9m3YLL8l42td",
   CMT321: "https://drive.google.com/drive/folders/1_iAcahxJEh4zoNfI7uvvn0YOXSJ6jXA_",
   CMT427: "https://drive.google.com/drive/folders/1j8KmuErXaV8D0EgzPcOP0dwEoeHndGQt",

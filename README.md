@@ -50,7 +50,7 @@ npm run validate:visual
 
 The initial catalogue currently contains:
 
-- 32 public courses across 8 categories;
+- 33 public courses across 8 categories;
 - 29 course planners;
 - 311 numbered chapter/lecture-note files; and
 - 21 `R##`-prefixed reference files: 19 identifiable books that are publicly cited below, plus two restricted solution manuals that are not represented as public books.
