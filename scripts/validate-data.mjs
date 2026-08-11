@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { CATEGORIES, COURSES, REQUIRED_COURSE_IDS } from "../data/courses.js";
 import { CONNECTIONS } from "../data/connections.js";
 import { MATERIAL_URLS } from "../data/materials.js";
+import { CHANGE_TYPES, CHANGELOG_ENTRIES } from "../data/changelog.js";
 
 assert.equal(CATEGORIES.length, 8, "Expected eight categories");
 assert.equal(COURSES.length, 33, "CMT425 must appear in the public catalogue with its course materials");
@@ -101,9 +102,28 @@ for (const { fromId, toId, reason } of CONNECTIONS) {
 const serialisedCourses = JSON.stringify(COURSES);
 assert.doesNotMatch(serialisedCourses, /[A-Z]:\\|\.pdf|lecture notes|course planner/i);
 
+const requiredChangelogTitles = [
+  "Data and Databases course detail enriched",
+  "CMT425 Enterprise Architecture and Systems added",
+  "CSE442 Software Testing added",
+  "Knowledge City course library launched"
+];
+assert.deepEqual(CHANGE_TYPES, ["Release", "Added", "Improved", "Corrected", "Retired"]);
+assert.deepEqual(CHANGELOG_ENTRIES.map(({ title }) => title), requiredChangelogTitles);
+for (const entry of CHANGELOG_ENTRIES) {
+  assert.match(entry.date, /^\d{4}-\d{2}-\d{2}$/, `Invalid Changelog date: ${entry.title}`);
+  assert.ok(CHANGE_TYPES.includes(entry.type), `Invalid Changelog type: ${entry.type}`);
+  assert.ok(entry.title.trim() && entry.summary.trim(), "Changelog entries need learner-facing copy");
+  if (entry.courseId) assert.ok(ids.has(entry.courseId), `Unknown Changelog course: ${entry.courseId}`);
+  if (entry.category) assert.ok(CATEGORIES.includes(entry.category), `Unknown Changelog category: ${entry.category}`);
+}
+assert.doesNotMatch(JSON.stringify(CHANGELOG_ENTRIES), /[A-Z]:\\|\.pdf|lecture notes|course planner|drive\.google\.com|permission/i);
+
 const publicRuntimeSources = await Promise.all([
   "index.html",
   "assets/app.js",
+  "assets/changelog.js",
+  "data/changelog.js",
   "data/courses.js",
   "data/connections.js"
 ].map((file) => readFile(new URL(`../${file}`, import.meta.url), "utf8")));

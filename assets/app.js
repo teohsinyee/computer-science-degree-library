@@ -1,11 +1,17 @@
 import { CATEGORIES, COURSES } from "../data/courses.js";
 import { CONNECTIONS } from "../data/connections.js";
+import { CHANGE_TYPES, CHANGELOG_ENTRIES } from "../data/changelog.js";
 import {
   filterCourses,
   formatReference,
   getConnectedCourseIds,
   getCourseIdFromHash
 } from "./catalogue.js";
+import {
+  filterChangelogEntries,
+  groupEntriesByMonth,
+  isChangelogHash
+} from "./changelog.js";
 import {
   getCourseProgress,
   getJournalCourses,
@@ -15,6 +21,7 @@ import {
 } from "./progress.js";
 
 const atlas = document.querySelector("#atlas");
+const atlasWorkspace = document.querySelector("#atlas-workspace");
 const searchForm = document.querySelector("#search-form");
 const searchInput = document.querySelector("#course-search");
 const categoryFilters = document.querySelector("#category-filters");
@@ -22,6 +29,12 @@ const resultSummary = document.querySelector("#result-summary");
 const courseGrid = document.querySelector("#course-grid");
 const courseDetail = document.querySelector("#course-detail");
 const journalContent = document.querySelector("#journal-content");
+const journal = document.querySelector("#journal");
+const changelog = document.querySelector("#changelog");
+const changelogFilters = document.querySelector("#changelog-filters");
+const changelogResults = document.querySelector("#changelog-results");
+const changelogContent = document.querySelector("#changelog-content");
+const primaryNavLinks = [...document.querySelectorAll(".primary-nav a")];
 const pathwaysButton = document.querySelector("#pathways");
 const aboutButton = document.querySelector("#about");
 const aboutDialog = document.querySelector("#about-dialog");
@@ -32,6 +45,8 @@ let detailInvoker = null;
 let wasDetailOpen = false;
 let pathwaysEnabled = false;
 let progressSaveNotice = "";
+let selectedChangelogType = "All";
+let selectedChangelogCategory = "All";
 
 function getBrowserStorage() {
   try {
@@ -83,6 +98,12 @@ function updateCategoryControls() {
 
 function selectedCourseId() {
   return getCourseIdFromHash(window.location.hash);
+}
+
+function currentView() {
+  if (isChangelogHash(window.location.hash)) return "changelog";
+  if (window.location.hash === "#journal") return "journal";
+  return "atlas";
 }
 
 function selectCourse(course, invoker = null) {
@@ -227,6 +248,98 @@ function appendMaterials(course) {
   courseDetail.append(link);
 }
 
+function appendChangelogFilterGroup(label, values, selectedValue, onSelect) {
+  const group = document.createElement("div");
+  group.className = "changelog-filter-group";
+  group.setAttribute("role", "group");
+  group.setAttribute("aria-label", label);
+
+  for (const value of values) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "changelog-filter";
+    button.textContent = value === "All" ? label : value;
+    button.setAttribute("aria-pressed", String(value === selectedValue));
+    button.addEventListener("click", () => {
+      onSelect(value);
+      renderChangelog();
+    });
+    group.append(button);
+  }
+
+  changelogFilters.append(group);
+}
+
+function appendChangelogEntry(group, entry) {
+  const article = document.createElement("article");
+  article.className = "changelog-entry";
+  const date = document.createElement("time");
+  date.dateTime = entry.date;
+  date.textContent = new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC"
+  }).format(new Date(`${entry.date}T00:00:00Z`));
+  article.append(date);
+
+  const type = appendTextElement(article, "p", entry.type, "changelog-entry-type");
+  type.dataset.type = entry.type.toLowerCase();
+
+  const copy = document.createElement("div");
+  copy.className = "changelog-entry-copy";
+  const title = appendTextElement(copy, "h3", entry.title, "changelog-entry-title");
+  if (entry.courseId) {
+    const link = document.createElement("a");
+    link.href = `#course/${entry.courseId}`;
+    link.textContent = title.textContent;
+    title.replaceChildren(link);
+  }
+  appendTextElement(copy, "p", entry.summary, "changelog-entry-summary");
+  article.append(copy);
+
+  const tags = document.createElement("div");
+  tags.className = "changelog-tags";
+  if (entry.courseId) {
+    const course = COURSES.find(({ id }) => id === entry.courseId);
+    const courseLink = document.createElement("a");
+    courseLink.className = "changelog-course-link";
+    courseLink.href = `#course/${entry.courseId}`;
+    courseLink.textContent = `${entry.courseId} · ${course.title}`;
+    tags.append(courseLink);
+  }
+  if (entry.category) appendTextElement(tags, "span", entry.category, "changelog-category-tag");
+  if (tags.childElementCount > 0) article.append(tags);
+
+  group.append(article);
+}
+
+function renderChangelog() {
+  changelogFilters.replaceChildren();
+  appendChangelogFilterGroup("All updates", ["All", ...CHANGE_TYPES], selectedChangelogType, (value) => {
+    selectedChangelogType = value;
+  });
+  appendChangelogFilterGroup("All categories", ["All", ...CATEGORIES], selectedChangelogCategory, (value) => {
+    selectedChangelogCategory = value;
+  });
+
+  const entries = filterChangelogEntries(CHANGELOG_ENTRIES, selectedChangelogType, selectedChangelogCategory);
+  changelogContent.replaceChildren();
+  changelogResults.textContent = `${entries.length} update${entries.length === 1 ? "" : "s"} in view.`;
+
+  if (entries.length === 0) {
+    appendTextElement(changelogContent, "p", "No updates match these filters. Choose All updates or All categories to reset.", "changelog-empty");
+    return;
+  }
+
+  for (const month of groupEntriesByMonth(entries)) {
+    const group = document.createElement("section");
+    group.className = "changelog-month";
+    appendTextElement(group, "h3", month.label);
+    for (const entry of month.entries) appendChangelogEntry(group, entry);
+    changelogContent.append(group);
+  }
+}
+
 function renderJournal() {
   journalContent.replaceChildren();
   const courses = getJournalCourses(guestProgress, COURSES);
@@ -250,6 +363,29 @@ function renderJournal() {
     });
     entry.append(continueButton);
     journalContent.append(entry);
+  }
+}
+
+function renderView() {
+  const view = currentView();
+  const atlasVisible = view === "atlas";
+  atlas.hidden = !atlasVisible;
+  atlasWorkspace.hidden = !atlasVisible;
+  changelog.hidden = view !== "changelog";
+  journal.hidden = view !== "journal";
+
+  for (const link of primaryNavLinks) {
+    if (link.getAttribute("href") === `#${view}`) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  }
+
+  if (atlasVisible) {
+    renderCourses();
+    renderDetail();
+  } else if (view === "changelog") {
+    renderChangelog();
+  } else {
+    renderJournal();
   }
 }
 
@@ -351,8 +487,7 @@ courseDetail.addEventListener("keydown", (event) => {
 searchForm.addEventListener("submit", (event) => event.preventDefault());
 searchInput.addEventListener("input", renderCourses);
 window.addEventListener("hashchange", () => {
-  renderCourses();
-  renderDetail();
+  renderView();
 });
 detailBreakpoint.addEventListener("change", () => {
   if (courseDetail.dataset.open === "true") renderDetail({ focusDetail: true });
@@ -373,6 +508,4 @@ document.addEventListener("keydown", (event) => {
 
 createCategoryControls();
 updateCategoryControls();
-renderCourses();
-renderDetail();
-renderJournal();
+renderView();

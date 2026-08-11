@@ -8,6 +8,7 @@ This is a public course-learning platform, not a file mirror. It makes it easy t
 
 - find a course or concept quickly;
 - see the chapters and properly cited key reference books for a course;
+- see public course-library additions and improvements in the Changelog;
 - continue unfinished revision from the next chapter, privately in the current browser; and
 - explore hand-curated course connections without presenting them as official prerequisites.
 
@@ -27,6 +28,7 @@ To configure a course, add its approved Google Drive **folder** URL to `data/mat
 
 - Frontend: GitHub Pages.
 - Progress: guest-first browser local storage; it does not leave the visitor's device.
+- Changelog: public, learner-facing library updates; separate from private Journal progress.
 - Course relationships: explicit, hand-curated learning connections with a visible reason.
 - Visual direction: a light, map-inspired course explorer with colourful subject districts.
 - Product identity: neutral course-learning platform; no personal name or university branding.
