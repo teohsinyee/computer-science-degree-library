@@ -47,6 +47,7 @@ let pathwaysEnabled = false;
 let progressSaveNotice = "";
 let selectedChangelogType = "All";
 let selectedChangelogCategory = "All";
+let previousView = null;
 
 function getBrowserStorage() {
   try {
@@ -100,6 +101,11 @@ function selectedCourseId() {
   return getCourseIdFromHash(window.location.hash);
 }
 
+function syncSelectedCategoryToCourseRoute() {
+  const course = COURSES.find(({ id }) => id === selectedCourseId());
+  if (course) selectedCategory = course.category;
+}
+
 function currentView() {
   if (isChangelogHash(window.location.hash)) return "changelog";
   if (window.location.hash === "#journal") return "journal";
@@ -117,7 +123,7 @@ function selectCourse(course, invoker = null) {
   }
 }
 
-function renderCourses() {
+function updateCourses() {
   const courses = filterCourses(COURSES, searchInput.value, selectedCategory);
   const activeCourseId = selectedCourseId();
   const connectedCourseIds = pathwaysEnabled && activeCourseId
@@ -146,6 +152,10 @@ function renderCourses() {
     appendTextElement(card, "span", course.category, "course-card-category");
     courseGrid.append(card);
   }
+}
+
+function renderCourses() {
+  return updateCourses();
 }
 
 function closeDetail() {
@@ -263,6 +273,7 @@ function appendChangelogFilterGroup(label, values, selectedValue, onSelect) {
     button.addEventListener("click", () => {
       onSelect(value);
       renderChangelog();
+      playChangelogContentTransition();
     });
     group.append(button);
   }
@@ -313,7 +324,7 @@ function appendChangelogEntry(group, entry) {
   group.append(article);
 }
 
-function renderChangelog() {
+function renderChangelogFilters() {
   changelogFilters.replaceChildren();
   appendChangelogFilterGroup("All updates", ["All", ...CHANGE_TYPES], selectedChangelogType, (value) => {
     selectedChangelogType = value;
@@ -321,7 +332,9 @@ function renderChangelog() {
   appendChangelogFilterGroup("All categories", ["All", ...CATEGORIES], selectedChangelogCategory, (value) => {
     selectedChangelogCategory = value;
   });
+}
 
+function updateChangelogContent() {
   const entries = filterChangelogEntries(CHANGELOG_ENTRIES, selectedChangelogType, selectedChangelogCategory);
   changelogContent.replaceChildren();
   changelogResults.textContent = `${entries.length} update${entries.length === 1 ? "" : "s"} in view.`;
@@ -340,7 +353,12 @@ function renderChangelog() {
   }
 }
 
-function renderJournal() {
+function renderChangelog() {
+  renderChangelogFilters();
+  return updateChangelogContent();
+}
+
+function updateJournal() {
   journalContent.replaceChildren();
   const courses = getJournalCourses(guestProgress, COURSES);
   if (courses.length === 0) {
@@ -366,8 +384,28 @@ function renderJournal() {
   }
 }
 
-function renderView() {
+function renderJournal() {
+  return updateJournal();
+}
+
+function playViewEntrance(element) {
+  element.classList.remove("github-entrance");
+  void element.offsetWidth;
+  element.classList.add("github-entrance");
+  window.setTimeout(() => element.classList.remove("github-entrance"), 1600);
+}
+
+function playChangelogContentTransition() {
+  changelogContent.classList.remove("changelog-content-enter");
+  void changelogContent.offsetWidth;
+  changelogContent.classList.add("changelog-content-enter");
+  window.setTimeout(() => changelogContent.classList.remove("changelog-content-enter"), 360);
+}
+
+function updateView() {
   const view = currentView();
+  const isNewView = view !== previousView;
+  previousView = view;
   const atlasVisible = view === "atlas";
   atlas.hidden = !atlasVisible;
   atlasWorkspace.hidden = !atlasVisible;
@@ -380,16 +418,28 @@ function renderView() {
   }
 
   if (atlasVisible) {
+    syncSelectedCategoryToCourseRoute();
+    updateCategoryControls();
     renderCourses();
     renderDetail();
+    if (isNewView) {
+      playViewEntrance(atlas);
+      playViewEntrance(atlasWorkspace);
+    }
   } else if (view === "changelog") {
     renderChangelog();
+    if (isNewView) playViewEntrance(changelog);
   } else {
     renderJournal();
+    if (isNewView) playViewEntrance(journal);
   }
 }
 
-function renderDetail({ focusDetail = false, focusSelector = null } = {}) {
+function renderView() {
+  return updateView();
+}
+
+function updateDetail({ focusDetail = false, focusSelector = null } = {}) {
   const courseId = selectedCourseId();
   const course = COURSES.find(({ id }) => id === courseId);
   courseDetail.replaceChildren();
@@ -460,6 +510,10 @@ function renderDetail({ focusDetail = false, focusSelector = null } = {}) {
 
   if (focusSelector) courseDetail.querySelector(focusSelector)?.focus();
   else if (isMobileDetail() || focusDetail) closeButton.focus();
+}
+
+function renderDetail(options = {}) {
+  return updateDetail(options);
 }
 
 courseDetail.addEventListener("keydown", (event) => {
