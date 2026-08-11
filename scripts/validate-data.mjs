@@ -30,7 +30,12 @@ const plannerChapterCounts = {
   CSE241: 14,
   CSE441: 8,
   CSE442: 7,
-  CMT425: 14
+  CMT425: 14,
+  CMT221: 11,
+  CMT321: 11,
+  CMT427: 11,
+  CPC351: 8,
+  CPC451: 8
 };
 for (const [courseId, expectedChapterCount] of Object.entries(plannerChapterCounts)) {
   const course = COURSES.find(({ id }) => id === courseId);
@@ -52,6 +57,16 @@ assert.deepEqual(
   ["The importance of IT in business", "Modern organizations as socio-technical systems of business and IT", "Business and IT alignment", "Enterprise architecture as a solution to the alignment problem"],
   "CMT425 must preserve the first chapter outline from its course materials"
 );
+assert.deepEqual(
+  COURSES.find(({ id }) => id === "CMT221").chapters[0].subtopics,
+  ["Data vs. information", "Introducing the database", "Evolution of file system data processing", "Database systems"],
+  "CMT221 must preserve the Database Systems subtopics from its course planner"
+);
+assert.deepEqual(
+  COURSES.find(({ id }) => id === "CPC451").chapters[4].subtopics,
+  ["MongoDB", "Cassandra", "Neo4j", "Amazon DynamoDB"],
+  "CPC451 must consolidate repeated planner weeks into one Database for Big Data revision chapter"
+);
 
 for (const [courseId, materialsUrl] of Object.entries(MATERIAL_URLS)) {
   assert.ok(ids.has(courseId), `Unknown materials course: ${courseId}`);
@@ -59,7 +74,10 @@ for (const [courseId, materialsUrl] of Object.entries(MATERIAL_URLS)) {
 }
 
 const publicReferences = COURSES.flatMap(({ references }) => references);
-assert.equal(publicReferences.length, 19, "Expected every identifiable source book to be publicly cited");
+assert.equal(publicReferences.length, 30, "Expected all Data and Databases main reference books to be publicly cited");
+for (const [courseId, expectedReferenceCount] of Object.entries({ CMT221: 1, CMT321: 3, CMT427: 3, CPC351: 2, CPC451: 4 })) {
+  assert.equal(COURSES.find(({ id }) => id === courseId).references.length, expectedReferenceCount, `${courseId} must cite its planner main references`);
+}
 
 assert.equal(Object.keys(MATERIAL_URLS).length, 30, "CMT425 must expose its verified Drive materials link");
 assert.ok(!MATERIAL_URLS.CAT201 && !MATERIAL_URLS.CAT304, "Planner-only courses must not expose Drive links");
