@@ -5,6 +5,7 @@ const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const css = await readFile(new URL("../assets/styles.css", import.meta.url), "utf8");
 
 assert.match(html, /id=["']atlas["']/);
+assert.match(html, /id=["']changelog["']/);
 assert.match(html, /id=["']journal["']/);
 assert.match(html, /id=["']pathways["']/);
 assert.match(html, /class=["'][^"']*atlas-hero/);
@@ -19,8 +20,15 @@ assert.match(css, /\.site-header\s*{[\s\S]*position:\s*sticky/, "Header must rem
 assert.match(css, /\.site-header\s*{[\s\S]*z-index:/, "Sticky header needs a stable stacking layer");
 assert.match(css, /\.category-filters\s*{[\s\S]*display:\s*flex/, "District controls must use a non-overlapping flex layout");
 assert.match(css, /\.district\s*{[\s\S]*flex:\s*0 0 auto/, "Each district control must retain its own width");
-assert.match(css, /#atlas, #journal\s*{[\s\S]*scroll-margin-top:/, "Anchors must clear the sticky header");
+assert.match(css, /#atlas, #changelog, #journal\s*{[\s\S]*scroll-margin-top:/, "All primary anchors must clear the sticky header");
 assert.match(css, /\.course-summary\s*{[\s\S]*font:\s*\.9rem\/1\.55/, "Course descriptions must be comfortably readable");
 assert.match(css, /\.connection-link\s*{[\s\S]*font:\s*\.82rem\/1\.4/, "Related-course links must be comfortably readable");
 assert.match(css, /\.chapter-list li\s*{[\s\S]*font:\s*\.86rem\/1\.35/, "Chapter labels must be comfortably readable");
 assert.match(css, /\.reference-item p\s*{[\s\S]*font:\s*\.8rem\/1\.4/, "Reference-book details must be comfortably readable");
+assert.match(css, /\.changelog-section\s*{[\s\S]*max-width:/, "Changelog needs a readable content width");
+assert.match(css, /\.changelog-entry\s*{[\s\S]*display:\s*grid/, "Changelog entries need a scanable desktop grid");
+assert.match(css, /\.changelog-filters\s*{[\s\S]*display:\s*flex/, "Changelog filters need a responsive flex layout");
+assert.match(css, /\.changelog-filter-group\s*{[\s\S]*flex:\s*1 1 100%/, "Changelog filter groups must wrap within the viewport");
+assert.match(css, /\.changelog-course-link, \.changelog-category-tag\s*{[\s\S]*max-width:/, "Long Changelog tags must not force horizontal overflow");
+assert.match(css, /\[hidden\]\s*{[^}]*display:\s*none\s*!important/, "Hidden primary views must override component display rules");
+assert.match(css, /\.changelog-intro p:not\(\.section-kicker\)\s*{[^}]*margin:\s*\.45rem 0 0/, "Changelog summary needs space below the display heading");
