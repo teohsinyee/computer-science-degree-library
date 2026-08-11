@@ -3,6 +3,12 @@ import { readFile } from "node:fs/promises";
 
 const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const css = await readFile(new URL("../assets/styles.css", import.meta.url), "utf8");
+const app = await readFile(new URL("../assets/app.js", import.meta.url), "utf8");
+
+assert.match(app, /from "\.\/motion\.js"/, "The app must use the shared motion module");
+assert.match(app, /runViewTransition\(/, "Primary view changes must use progressive View Transitions");
+assert.match(app, /createContentTransition\(/, "Content replacements need a cancellable transition");
+assert.match(app, /window\.matchMedia\("\(prefers-reduced-motion: reduce\)"\)/, "The app must honour the learner motion preference");
 
 assert.match(html, /id=["']atlas["']/);
 assert.match(html, /id=["']changelog["']/);

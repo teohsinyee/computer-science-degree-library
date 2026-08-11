@@ -19,6 +19,11 @@ import {
   saveGuestProgress,
   toggleChapter
 } from "./progress.js";
+import {
+  createContentTransition,
+  prefersReducedMotion,
+  runViewTransition
+} from "./motion.js";
 
 const atlas = document.querySelector("#atlas");
 const atlasWorkspace = document.querySelector("#atlas-workspace");
@@ -39,6 +44,7 @@ const pathwaysButton = document.querySelector("#pathways");
 const aboutButton = document.querySelector("#about");
 const aboutDialog = document.querySelector("#about-dialog");
 const detailBreakpoint = window.matchMedia("(max-width: 899px)");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 let selectedCategory = "All";
 let detailInvoker = null;
@@ -58,6 +64,11 @@ function getBrowserStorage() {
 
 const guestStorage = getBrowserStorage();
 let guestProgress = loadGuestProgress(guestStorage);
+const animateContent = createContentTransition({
+  prefersReducedMotion: () => prefersReducedMotion(reducedMotion),
+  wait: (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds)),
+  nextFrame: (callback) => window.requestAnimationFrame(callback)
+});
 
 function categoryKey(category) {
   return category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -84,7 +95,7 @@ function createCategoryControls() {
     button.addEventListener("click", () => {
       selectedCategory = category;
       updateCategoryControls();
-      renderCourses();
+      renderCourses({ animate: true });
     });
     categoryFilters.append(button);
   }
@@ -110,14 +121,14 @@ function selectCourse(course, invoker = null) {
   detailInvoker = invoker;
   const nextHash = `#course/${course.id}`;
   if (window.location.hash === nextHash) {
-    renderCourses();
-    renderDetail({ focusDetail: true });
+    renderCourses({ animate: true });
+    renderDetail({ animate: true, focusDetail: true });
   } else {
     window.location.hash = nextHash;
   }
 }
 
-function renderCourses() {
+function updateCourses() {
   const courses = filterCourses(COURSES, searchInput.value, selectedCategory);
   const activeCourseId = selectedCourseId();
   const connectedCourseIds = pathwaysEnabled && activeCourseId
@@ -146,6 +157,10 @@ function renderCourses() {
     appendTextElement(card, "span", course.category, "course-card-category");
     courseGrid.append(card);
   }
+}
+
+function renderCourses({ animate = false } = {}) {
+  return animate ? animateContent(courseGrid, updateCourses) : updateCourses();
 }
 
 function closeDetail() {
@@ -206,8 +221,8 @@ function appendChapters(course) {
     checkbox.addEventListener("change", () => {
       guestProgress = toggleChapter(guestProgress, course.id, chapter.id, new Date().toISOString());
       saveProgress();
-      renderDetail({ focusSelector: `#chapter-${course.id}-${chapter.id}` });
-      renderJournal();
+      renderDetail({ animate: true, focusSelector: `#chapter-${course.id}-${chapter.id}` });
+      renderJournal({ animate: true });
     });
     const text = document.createElement("span");
     text.textContent = `${chapter.id} · ${chapter.title}`;
@@ -262,7 +277,7 @@ function appendChangelogFilterGroup(label, values, selectedValue, onSelect) {
     button.setAttribute("aria-pressed", String(value === selectedValue));
     button.addEventListener("click", () => {
       onSelect(value);
-      renderChangelog();
+      renderChangelog({ animate: true });
     });
     group.append(button);
   }
@@ -313,7 +328,7 @@ function appendChangelogEntry(group, entry) {
   group.append(article);
 }
 
-function renderChangelog() {
+function renderChangelogFilters() {
   changelogFilters.replaceChildren();
   appendChangelogFilterGroup("All updates", ["All", ...CHANGE_TYPES], selectedChangelogType, (value) => {
     selectedChangelogType = value;
@@ -321,7 +336,9 @@ function renderChangelog() {
   appendChangelogFilterGroup("All categories", ["All", ...CATEGORIES], selectedChangelogCategory, (value) => {
     selectedChangelogCategory = value;
   });
+}
 
+function updateChangelogContent() {
   const entries = filterChangelogEntries(CHANGELOG_ENTRIES, selectedChangelogType, selectedChangelogCategory);
   changelogContent.replaceChildren();
   changelogResults.textContent = `${entries.length} update${entries.length === 1 ? "" : "s"} in view.`;
@@ -340,7 +357,12 @@ function renderChangelog() {
   }
 }
 
-function renderJournal() {
+function renderChangelog({ animate = false } = {}) {
+  renderChangelogFilters();
+  return animate ? animateContent(changelogContent, updateChangelogContent) : updateChangelogContent();
+}
+
+function updateJournal() {
   journalContent.replaceChildren();
   const courses = getJournalCourses(guestProgress, COURSES);
   if (courses.length === 0) {
@@ -366,7 +388,19 @@ function renderJournal() {
   }
 }
 
-function renderView() {
+function renderJournal({ animate = false } = {}) {
+  return animate ? animateContent(journalContent, updateJournal) : updateJournal();
+}
+
+function playViewEntrance(element) {
+  if (prefersReducedMotion(reducedMotion)) return;
+  element.classList.remove("motion-view-enter");
+  void element.offsetWidth;
+  element.classList.add("motion-view-enter");
+  element.addEventListener("animationend", () => element.classList.remove("motion-view-enter"), { once: true });
+}
+
+function updateView() {
   const view = currentView();
   const atlasVisible = view === "atlas";
   atlas.hidden = !atlasVisible;
@@ -382,14 +416,22 @@ function renderView() {
   if (atlasVisible) {
     renderCourses();
     renderDetail();
+    playViewEntrance(atlas);
+    playViewEntrance(atlasWorkspace);
   } else if (view === "changelog") {
     renderChangelog();
+    playViewEntrance(changelog);
   } else {
     renderJournal();
+    playViewEntrance(journal);
   }
 }
 
-function renderDetail({ focusDetail = false, focusSelector = null } = {}) {
+function renderView() {
+  return runViewTransition(document, reducedMotion, updateView);
+}
+
+function updateDetail({ focusDetail = false, focusSelector = null } = {}) {
   const courseId = selectedCourseId();
   const course = COURSES.find(({ id }) => id === courseId);
   courseDetail.replaceChildren();
@@ -462,6 +504,11 @@ function renderDetail({ focusDetail = false, focusSelector = null } = {}) {
   else if (isMobileDetail() || focusDetail) closeButton.focus();
 }
 
+function renderDetail({ animate = false, ...options } = {}) {
+  const update = () => updateDetail(options);
+  return animate ? animateContent(courseDetail, update) : update();
+}
+
 courseDetail.addEventListener("keydown", (event) => {
   if (!isMobileDetail() || courseDetail.dataset.open !== "true") return;
   if (event.key === "Escape") {
@@ -485,7 +532,7 @@ courseDetail.addEventListener("keydown", (event) => {
 });
 
 searchForm.addEventListener("submit", (event) => event.preventDefault());
-searchInput.addEventListener("input", renderCourses);
+searchInput.addEventListener("input", () => renderCourses({ animate: true }));
 window.addEventListener("hashchange", () => {
   renderView();
 });
@@ -495,7 +542,7 @@ detailBreakpoint.addEventListener("change", () => {
 pathwaysButton.addEventListener("click", () => {
   pathwaysEnabled = !pathwaysEnabled;
   pathwaysButton.setAttribute("aria-pressed", String(pathwaysEnabled));
-  renderCourses();
+  renderCourses({ animate: true });
 });
 aboutButton.addEventListener("click", () => aboutDialog.showModal());
 aboutDialog.querySelector(".dialog-close").addEventListener("click", () => aboutDialog.close());
