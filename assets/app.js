@@ -19,12 +19,6 @@ import {
   saveGuestProgress,
   toggleChapter
 } from "./progress.js";
-import {
-  getViewMotionMode,
-  createContentTransition,
-  prefersReducedMotion,
-  runViewTransition
-} from "./motion.js";
 
 const atlas = document.querySelector("#atlas");
 const atlasWorkspace = document.querySelector("#atlas-workspace");
@@ -45,7 +39,6 @@ const pathwaysButton = document.querySelector("#pathways");
 const aboutButton = document.querySelector("#about");
 const aboutDialog = document.querySelector("#about-dialog");
 const detailBreakpoint = window.matchMedia("(max-width: 899px)");
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 let selectedCategory = "All";
 let detailInvoker = null;
@@ -54,7 +47,7 @@ let pathwaysEnabled = false;
 let progressSaveNotice = "";
 let selectedChangelogType = "All";
 let selectedChangelogCategory = "All";
-let hasRenderedView = false;
+let previousView = null;
 
 function getBrowserStorage() {
   try {
@@ -66,11 +59,6 @@ function getBrowserStorage() {
 
 const guestStorage = getBrowserStorage();
 let guestProgress = loadGuestProgress(guestStorage);
-const animateContent = createContentTransition({
-  prefersReducedMotion: () => prefersReducedMotion(reducedMotion),
-  wait: (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds)),
-  nextFrame: (callback) => window.requestAnimationFrame(callback)
-});
 
 function categoryKey(category) {
   return category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -97,7 +85,7 @@ function createCategoryControls() {
     button.addEventListener("click", () => {
       selectedCategory = category;
       updateCategoryControls();
-      renderCourses({ animate: true });
+      renderCourses();
     });
     categoryFilters.append(button);
   }
@@ -113,6 +101,11 @@ function selectedCourseId() {
   return getCourseIdFromHash(window.location.hash);
 }
 
+function syncSelectedCategoryToCourseRoute() {
+  const course = COURSES.find(({ id }) => id === selectedCourseId());
+  if (course) selectedCategory = course.category;
+}
+
 function currentView() {
   if (isChangelogHash(window.location.hash)) return "changelog";
   if (window.location.hash === "#journal") return "journal";
@@ -123,8 +116,8 @@ function selectCourse(course, invoker = null) {
   detailInvoker = invoker;
   const nextHash = `#course/${course.id}`;
   if (window.location.hash === nextHash) {
-    renderCourses({ animate: true });
-    renderDetail({ animate: true, focusDetail: true });
+    renderCourses();
+    renderDetail({ focusDetail: true });
   } else {
     window.location.hash = nextHash;
   }
@@ -161,8 +154,8 @@ function updateCourses() {
   }
 }
 
-function renderCourses({ animate = false } = {}) {
-  return animate ? animateContent(courseGrid, updateCourses) : updateCourses();
+function renderCourses() {
+  return updateCourses();
 }
 
 function closeDetail() {
@@ -223,8 +216,8 @@ function appendChapters(course) {
     checkbox.addEventListener("change", () => {
       guestProgress = toggleChapter(guestProgress, course.id, chapter.id, new Date().toISOString());
       saveProgress();
-      renderDetail({ animate: true, focusSelector: `#chapter-${course.id}-${chapter.id}` });
-      renderJournal({ animate: true });
+      renderDetail({ focusSelector: `#chapter-${course.id}-${chapter.id}` });
+      renderJournal();
     });
     const text = document.createElement("span");
     text.textContent = `${chapter.id} · ${chapter.title}`;
@@ -279,7 +272,8 @@ function appendChangelogFilterGroup(label, values, selectedValue, onSelect) {
     button.setAttribute("aria-pressed", String(value === selectedValue));
     button.addEventListener("click", () => {
       onSelect(value);
-      renderChangelog({ animate: true });
+      renderChangelog();
+      playChangelogContentTransition();
     });
     group.append(button);
   }
@@ -359,9 +353,9 @@ function updateChangelogContent() {
   }
 }
 
-function renderChangelog({ animate = false } = {}) {
+function renderChangelog() {
   renderChangelogFilters();
-  return animate ? animateContent(changelogContent, updateChangelogContent) : updateChangelogContent();
+  return updateChangelogContent();
 }
 
 function updateJournal() {
@@ -390,20 +384,28 @@ function updateJournal() {
   }
 }
 
-function renderJournal({ animate = false } = {}) {
-  return animate ? animateContent(journalContent, updateJournal) : updateJournal();
+function renderJournal() {
+  return updateJournal();
 }
 
 function playViewEntrance(element) {
-  if (prefersReducedMotion(reducedMotion)) return;
-  element.classList.remove("motion-view-enter");
+  element.classList.remove("github-entrance");
   void element.offsetWidth;
-  element.classList.add("motion-view-enter");
-  element.addEventListener("animationend", () => element.classList.remove("motion-view-enter"), { once: true });
+  element.classList.add("github-entrance");
+  window.setTimeout(() => element.classList.remove("github-entrance"), 1600);
 }
 
-function updateView({ playEntrance = true } = {}) {
+function playChangelogContentTransition() {
+  changelogContent.classList.remove("changelog-content-enter");
+  void changelogContent.offsetWidth;
+  changelogContent.classList.add("changelog-content-enter");
+  window.setTimeout(() => changelogContent.classList.remove("changelog-content-enter"), 360);
+}
+
+function updateView() {
   const view = currentView();
+  const isNewView = view !== previousView;
+  previousView = view;
   const atlasVisible = view === "atlas";
   atlas.hidden = !atlasVisible;
   atlasWorkspace.hidden = !atlasVisible;
@@ -416,26 +418,25 @@ function updateView({ playEntrance = true } = {}) {
   }
 
   if (atlasVisible) {
+    syncSelectedCategoryToCourseRoute();
+    updateCategoryControls();
     renderCourses();
     renderDetail();
-    if (playEntrance) {
+    if (isNewView) {
       playViewEntrance(atlas);
       playViewEntrance(atlasWorkspace);
     }
   } else if (view === "changelog") {
     renderChangelog();
-    if (playEntrance) playViewEntrance(changelog);
+    if (isNewView) playViewEntrance(changelog);
   } else {
     renderJournal();
-    if (playEntrance) playViewEntrance(journal);
+    if (isNewView) playViewEntrance(journal);
   }
 }
 
 function renderView() {
-  const mode = getViewMotionMode({ hasRenderedView, documentRef: document, mediaQueryList: reducedMotion });
-  hasRenderedView = true;
-  const update = () => updateView({ playEntrance: mode.playEntrance });
-  return mode.useViewTransition ? runViewTransition(document, reducedMotion, update) : update();
+  return updateView();
 }
 
 function updateDetail({ focusDetail = false, focusSelector = null } = {}) {
@@ -511,9 +512,8 @@ function updateDetail({ focusDetail = false, focusSelector = null } = {}) {
   else if (isMobileDetail() || focusDetail) closeButton.focus();
 }
 
-function renderDetail({ animate = false, ...options } = {}) {
-  const update = () => updateDetail(options);
-  return animate ? animateContent(courseDetail, update) : update();
+function renderDetail(options = {}) {
+  return updateDetail(options);
 }
 
 courseDetail.addEventListener("keydown", (event) => {
@@ -539,7 +539,7 @@ courseDetail.addEventListener("keydown", (event) => {
 });
 
 searchForm.addEventListener("submit", (event) => event.preventDefault());
-searchInput.addEventListener("input", () => renderCourses({ animate: true }));
+searchInput.addEventListener("input", renderCourses);
 window.addEventListener("hashchange", () => {
   renderView();
 });
@@ -549,7 +549,7 @@ detailBreakpoint.addEventListener("change", () => {
 pathwaysButton.addEventListener("click", () => {
   pathwaysEnabled = !pathwaysEnabled;
   pathwaysButton.setAttribute("aria-pressed", String(pathwaysEnabled));
-  renderCourses({ animate: true });
+  renderCourses();
 });
 aboutButton.addEventListener("click", () => aboutDialog.showModal());
 aboutDialog.querySelector(".dialog-close").addEventListener("click", () => aboutDialog.close());

@@ -10,8 +10,6 @@
   --gold: #e8b900;
   --slate: #737577;
   --motion-feedback: 140ms;
-  --motion-content: 180ms;
-  --motion-view: 320ms;
   --motion-ease: ease-out;
   color: var(--ink);
   background: var(--paper);
@@ -27,19 +25,26 @@ button, a { -webkit-tap-highlight-color: transparent; }
 a { color: inherit; }
 [hidden] { display: none !important; }
 
-@keyframes motion-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes motion-fade-out { from { opacity: 1; } to { opacity: 0; } }
-@keyframes motion-fade-in { from { opacity: .35; } to { opacity: 1; } }
+@keyframes github-content-enter { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes github-heading-enter { 0% { opacity: 0; transform: translateX(-100%); } 50% { opacity: 1; } 100% { opacity: 1; transform: translateX(0); } }
+@keyframes github-line-enter { 0% { opacity: 0; transform: scaleX(.01); } 50% { opacity: 1; } 100% { opacity: 1; transform: scaleX(1); } }
+@keyframes github-button-enter-1 { 0%, 4% { opacity: 0; transform: translateY(100%); } 84%, 100% { opacity: 1; transform: translateY(0); } }
+@keyframes github-button-enter-2 { 0%, 8% { opacity: 0; transform: translateY(100%); } 88%, 100% { opacity: 1; transform: translateY(0); } }
+@keyframes github-button-enter-3 { 0%, 12% { opacity: 0; transform: translateY(100%); } 92%, 100% { opacity: 1; transform: translateY(0); } }
+@keyframes github-button-enter-4 { 0%, 16% { opacity: 0; transform: translateY(100%); } 96%, 100% { opacity: 1; transform: translateY(0); } }
+@keyframes github-button-enter-5 { 0%, 20% { opacity: 0; transform: translateY(100%); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes github-tag-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes changelog-content-refresh { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-::view-transition-old(root) { animation: motion-fade-out 180ms var(--motion-ease) both; }
-::view-transition-new(root) { animation: motion-fade-in var(--motion-view) var(--motion-ease) both; }
-
-[data-motion-state="leaving"] { opacity: 0; transition: opacity 120ms var(--motion-ease); }
-[data-motion-state="entering"] { animation: motion-enter var(--motion-content) var(--motion-ease) both; }
-
-.motion-view-enter .hero-copy > h1, .motion-view-enter .changelog-intro, .journal-section.motion-view-enter > div:first-child { animation: motion-enter var(--motion-view) var(--motion-ease) both; }
-.motion-view-enter .hero-note, .motion-view-enter .search-form, .motion-view-enter .changelog-filters, .journal-section.motion-view-enter .journal-content { animation: motion-enter var(--motion-view) var(--motion-ease) 45ms both; }
-.motion-view-enter .hero-map, .motion-view-enter .atlas-layout, .motion-view-enter .changelog-content { animation: motion-enter var(--motion-view) var(--motion-ease) 90ms both; }
+.atlas-hero.github-entrance .hero-copy, .atlas-hero.github-entrance .hero-map, .atlas-workspace.github-entrance .category-filters, .atlas-workspace.github-entrance .atlas-layout, .journal-section.github-entrance > div { animation: github-content-enter .6s cubic-bezier(0.67, 0.24, 0.15, 0.95) both; }
+.atlas-hero.github-entrance .hero-map, .atlas-workspace.github-entrance .atlas-layout, .journal-section.github-entrance .journal-content { animation-delay: .12s; }
+.changelog-section.github-entrance .changelog-intro, .changelog-section.github-entrance .changelog-filters, .changelog-section.github-entrance .changelog-content { animation: github-content-enter .6s cubic-bezier(0.67, 0.24, 0.15, 0.95) both; }
+.changelog-section.github-entrance .changelog-filters { animation-delay: .08s; }
+.changelog-section.github-entrance .changelog-content { animation-delay: .14s; }
+.changelog-intro h2 { overflow: hidden; padding: .08em 0 .14em; }.changelog-intro h2 span { display: inline-block; }.changelog-section.github-entrance .changelog-intro h2 span { animation: github-heading-enter 1.3s cubic-bezier(0.67, 0.12, 0.29, 0.97) both; }
+.changelog-section.github-entrance .changelog-filter-group { overflow: hidden; }.changelog-section.github-entrance .changelog-filter:nth-child(1) { animation: github-button-enter-1 .432s cubic-bezier(0.67, 0.24, 0.15, 0.95) both; }.changelog-section.github-entrance .changelog-filter:nth-child(2) { animation: github-button-enter-2 .624s cubic-bezier(0.67, 0.24, 0.15, 0.95) both; }.changelog-section.github-entrance .changelog-filter:nth-child(3) { animation: github-button-enter-3 .816s cubic-bezier(0.67, 0.24, 0.15, 0.95) both; }.changelog-section.github-entrance .changelog-filter:nth-child(4) { animation: github-button-enter-4 1.008s cubic-bezier(0.67, 0.24, 0.15, 0.95) both; }.changelog-section.github-entrance .changelog-filter:nth-child(n + 5) { animation: github-button-enter-5 1.2s cubic-bezier(0.67, 0.24, 0.15, 0.95) both; }
+.changelog-month > h3 { position: relative; }.changelog-month > h3::after { position: absolute; right: 0; bottom: -2px; left: 0; height: 2px; background: var(--ink); content: ""; transform-origin: left; }.changelog-section.github-entrance .changelog-month > h3::after { animation: github-line-enter 1.5s cubic-bezier(0.67, 0.24, 0.15, 0.95) both; }.changelog-section.github-entrance .changelog-tags > * { animation: github-tag-enter .5s cubic-bezier(0.43, 0.41, 0, 1.01) both; }
+.changelog-content.changelog-content-enter { animation: changelog-content-refresh .32s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .site-header { position: sticky; top: 0; z-index: 30; display: grid; grid-template-columns: auto minmax(11rem, 1fr) auto auto; align-items: center; gap: 1.5rem; min-height: 4.75rem; padding: 0 2.5rem; border-bottom: 1px solid var(--rule); background: var(--paper); }
@@ -106,5 +111,6 @@ dialog { width: min(34rem, calc(100% - 2rem)); padding: 2rem; border: 1px solid 
 
 @media (max-width: 1100px) { .site-header { grid-template-columns: auto 1fr auto; }.primary-nav { order: 4; grid-column: 1 / -1; min-height: 2.75rem; justify-content: flex-end; }.primary-nav a, .primary-nav button { min-height: 2.75rem; }.hero-note { left: 70%; }.atlas-layout { grid-template-columns: minmax(0, 1fr) minmax(19rem, 23rem); } }
 @media (max-width: 899px) { .site-header { display: flex; flex-wrap: wrap; gap: 1rem; padding: .85rem 1.25rem 0; }.wordmark { font-size: .72rem; }.descriptor { display: none; }.header-search-link { margin-left: auto; }.primary-nav { order: 3; width: 100%; min-height: 2.85rem; justify-content: space-between; gap: .4rem; overflow-x: auto; }.primary-nav a, .primary-nav button { min-height: 2.85rem; font-size: .66rem; }.atlas-hero { grid-template-columns: 1fr; min-height: auto; padding: 3rem 1.25rem 1.25rem; }.hero-copy h1 { font-size: clamp(3.7rem, 17vw, 5.8rem); }.hero-note { top: .35rem; right: 1.25rem; left: auto; font-size: .7rem; }.hero-map { min-height: 11rem; margin-top: 1.25rem; }.hero-map p { right: .3rem; bottom: 0; font-size: .6rem; }.hero-map-sketch { width: 100%; }.category-filters { flex-wrap: nowrap; }.atlas-workspace { padding: 1rem; }.atlas-layout { display: block; }.city-map { min-height: 28rem; border-radius: 1.25rem; }.course-grid { min-height: 28rem; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; padding: .7rem; }.course-card { min-height: 7.8rem; padding: .8rem; border-radius: 1.05rem; }.course-detail-panel { margin: 0; }.course-detail-panel[data-open="true"] { position: fixed; z-index: 40; inset: 0; min-height: 100dvh; margin: 0; overflow: auto; border-radius: 0; }.journal-section { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.25rem; }.changelog-section { min-height: calc(100vh - 7.6rem); padding: 3rem 1.25rem; }.changelog-intro { display: block; }.changelog-intro::after { display: block; margin-top: 2rem; padding: 1.25rem 0 0; border-top: 1px solid #8e8a82; border-left: 0; }.changelog-filters { padding-top: 2rem; }.changelog-entry { grid-template-columns: 1fr; gap: .7rem; padding-inline: 0; }.changelog-entry time { padding-top: 0; }.changelog-tags { justify-content: flex-start; } }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition-duration: .01ms !important; } }
 @media (max-width: 440px) { .header-search-link { padding: .55rem .7rem; }.header-search-link span { display: none; }.course-grid { grid-template-columns: 1fr 1fr; }.course-card-title { font-size: .78rem; }.course-card-id { font-size: .9rem; } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } ::view-transition-old(root), ::view-transition-new(root), .motion-view-enter, [data-motion-state] { animation: none !important; transition: none !important; } }
