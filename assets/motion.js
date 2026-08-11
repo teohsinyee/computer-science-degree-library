@@ -18,16 +18,18 @@ export function createContentTransition({ prefersReducedMotion: isReduced, wait,
 
   return async (element, update) => {
     const request = ++latestRequest;
-    if (isReduced()) return update();
+    if (isReduced()) {
+      delete element.dataset.motionState;
+      return update();
+    }
 
     element.dataset.motionState = "leaving";
     await wait(120);
     if (request !== latestRequest) return;
 
     update();
-    element.dataset.motionState = "entering";
     nextFrame(() => {
-      if (request === latestRequest) delete element.dataset.motionState;
+      if (request === latestRequest) element.dataset.motionState = "entering";
     });
   };
 }

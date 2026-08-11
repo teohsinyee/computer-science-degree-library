@@ -39,4 +39,14 @@ waits[0]();
 waits[1]();
 await Promise.all([first, second]);
 assert.equal(state.value, "second");
-assert.equal(state.dataset.motionState, undefined);
+assert.equal(state.dataset.motionState, "entering");
+
+const immediateState = { dataset: { motionState: "entering" } };
+const immediateTransition = createContentTransition({
+  prefersReducedMotion: () => true,
+  wait: () => { throw new Error("Reduced motion must not wait"); },
+  nextFrame: () => { throw new Error("Reduced motion must not schedule a frame"); }
+});
+await immediateTransition(immediateState, () => { immediateState.value = "immediate"; });
+assert.equal(immediateState.value, "immediate");
+assert.equal(immediateState.dataset.motionState, undefined);
