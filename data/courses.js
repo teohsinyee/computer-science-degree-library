@@ -117,14 +117,83 @@ export const COURSES = Object.freeze([
     { title: "The Future of Enterprise Architecture", subtopics: [] }
   ]),
 
-  course("CMT221", "Database Organisation and Design", "Data and Databases", "Covers database modelling, design, SQL, and administration.", ["Data Modelling", "SQL", "Database Security"], ["Database Systems", "Relational Design", "Database Administration"]),
-  course("CMT321", "Management and Engineering of Databases", "Data and Databases", "Examines database engineering and management in organisational settings.", ["Database Engineering", "Administration", "Data Management"], ["Database Planning", "Database Operations", "Database Governance"]),
-  course("CMT427", "Information Storage and Retrieval", "Data and Databases", "Introduces the organisation, indexing, search, and evaluation of information systems.", ["Indexing", "Search", "Information Retrieval"], ["Information Retrieval Foundations", "Indexing and Querying", "Search Evaluation"], [
-    { id: "R01", authors: ["W. Bruce Croft", "Donald Metzler", "Trevor Strohman"], title: "Search Engines: Information Retrieval in Practice", year: 2015, bookUrl: "https://books.google.com/books?id=ba4rAAAAQBAJ" },
-    { id: "R03", authors: ["Christopher D. Manning", "Prabhakar Raghavan", "Hinrich Schütze"], title: "Introduction to Information Retrieval", year: 2008, bookUrl: "https://www.cambridge.org/highereducation/books/introduction-to-information-retrieval/669D108D20F556C5C30957D63B5AB65C" }
+  course("CMT221", "Database Organisation and Design", "Data and Databases", "Covers database systems, relational design, SQL, and current database technologies.", ["Data Modelling", "SQL", "Database Security"], [
+    { title: "Database Systems", subtopics: ["Data vs. information", "Introducing the database", "Evolution of file system data processing", "Database systems"] },
+    { title: "Data Models", subtopics: ["Data modelling and data models", "Business rules", "The evolution of data models", "Degrees of data abstraction"] },
+    { title: "The Relational Database Model", subtopics: ["A logical view of data", "Keys", "Integrity rules", "Relational algebra", "Relationships within the relational database"] },
+    { title: "Entity Relationship Model (ERM)", subtopics: ["Entities, attributes and relationships", "Connectivity and cardinality", "Developing an ER diagram", "Weak and composite entities", "Relationship strength, participation and degree", "Recursive relationship"] },
+    { title: "Advanced Data Modelling", subtopics: ["The extended ER model", "Entity clustering", "Entity integrity", "Maintaining history of time variant data", "Fan traps", "Redundant relationship"] },
+    { title: "Data Normalization", subtopics: ["The importance of normalization", "The normalization process", "Functional, partial and transitive dependencies", "First Normal Form (1NF), Second Normal Form (2NF), Third Normal Form (3NF), Fourth Normal Form (4NF), and Boyce-Codd Normal Form (BCNF)"] },
+    { title: "SQL", subtopics: ["Data definition commands", "Data manipulation commands", "SELECT queries", "Virtual tables"] },
+    { title: "Advanced SQL", subtopics: ["Relational set operators", "SQL join operators", "Sub-queries and correlated queries", "SQL functions", "Procedural SQL"] },
+    { title: "Database Development Process", subtopics: ["The database life cycle", "Conceptual design", "DBMS software selection", "Logical and physical design", "Centralized and decentralized design"] },
+    { title: "Distributed Database Management Systems", subtopics: ["The evolution of distributed database management systems", "Distributed processing and distributed database", "Distributed database design"] },
+    { title: "Database Current Topics", subtopics: ["Database security", "Database administration", "Non-relational databases", "Databases for big data applications"] }
+  ], [
+    { id: "R01", authors: ["Carlos Coronel", "Steven Morris"], title: "Database Systems: Design, Implementation, and Management", edition: "13th ed.", year: 2018, bookUrl: "https://books.google.com/books?id=hg9EDwAAQBAJ" }
   ]),
-  course("CPC351", "Principles of Data Analytics", "Data and Databases", "Builds foundations for analytical methods, modelling, and evaluation.", ["Data Analytics", "Statistics", "Model Evaluation"], ["Analytics Foundations", "Statistical Evaluation", "Analytical Methods"]),
-  course("CPC451", "Big Data Technologies and Management", "Data and Databases", "Surveys scalable data technologies, NoSQL systems, and continuity planning.", ["NoSQL", "Distributed Data", "Big Data"], ["NoSQL Data Models", "Distributed Storage", "Business Continuity"]),
+  course("CMT321", "Management and Engineering of Databases", "Data and Databases", "Covers transaction processing, database protection, distributed databases, and emerging database technologies.", ["Transactions", "Database Security", "Distributed Databases"], [
+    { title: "Introduction to DBMS", subtopics: [] },
+    { title: "Transaction Management", subtopics: ["Definition of transaction", "Properties of transactions", "Database architecture"] },
+    { title: "Concurrency Control", subtopics: ["Problems of concurrency control", "Serializability", "Recoverability", "Locking methods", "Timestamping methods", "Optimistic techniques", "Granularity of data items"] },
+    { title: "Database Recovery", subtopics: ["Concepts", "Transactions and recovery", "Recovery facilities", "Backup mechanism", "Log file", "Checkpointing", "Recovery techniques", "Shadow paging", "ARIES recovery algorithm"] },
+    { title: "Database Security", subtopics: ["Threats", "Authorization", "Discretionary access", "Mandatory access control", "Multilevel relations and polyinstantiation", "Views", "Backup and recovery", "Encryption", "RAID", "DBMSs and web security"] },
+    { title: "Distributed DBMS", subtopics: ["Concepts", "Advantages and disadvantages of DDBMSs", "Homogeneous and heterogeneous DDBMSs", "Functions and architectures of a DDBMS", "Data fragmentation, replication and allocation", "Distributed relational database design", "Transparencies in a DDBMS", "Distributed transaction management", "Distributed concurrency control", "Distributed database recovery", "Distributed query optimization"] },
+    { title: "Object-Oriented Database", subtopics: ["Introduction to OODBMSs", "Issues in OODBMS", "Advantages and disadvantages of OODBMS", "Object-oriented database design", "Object-relational database system"] },
+    { title: "Data Warehousing", subtopics: ["Introduction to data warehousing", "Data warehouse architecture", "Data modelling for data warehouses", "Data warehousing tools and technologies", "Data mart", "Designing a data warehouse database"] },
+    { title: "OLAP", subtopics: ["Introduction to OLAP", "OLAP applications", "Multidimensional data model", "OLAP tools"] },
+    { title: "Data Mining", subtopics: ["Introduction to data mining", "Data mining techniques", "Data mining process", "Data mining tools", "Data mining and data warehousing"] },
+    { title: "Emerging Database Technologies and Applications", subtopics: ["Mobile databases", "Multimedia databases", "Geographic information systems (GIS)", "Genome data management"] }
+  ], [
+    { id: "R01", authors: ["Thomas M. Connolly", "Carolyn E. Begg"], title: "Database Systems: A Practical Approach to Design, Implementation, and Management", edition: "6th ed.", year: 2021, bookUrl: "https://www.pearson.com/en-us/subject-catalog/p/Connolly-Database-Systems-Subscription-6th-Edition/P200000003525/9780134410951" },
+    { id: "R02", authors: ["Abraham Silberschatz", "Henry F. Korth", "S. Sudarshan"], title: "Database System Concepts", edition: "7th ed.", year: 2020, bookUrl: "https://books.google.com/books/about/Database_System_Concepts.html?id=mIgZzgEACAAJ" },
+    { id: "R03", authors: ["Carlos Coronel", "Steven Morris"], title: "Database Systems: Design, Implementation, and Management", edition: "12th ed.", year: 2017, bookUrl: "https://www.cengageasia.com/TitleDetails/isbn/9781305627482" }
+  ]),
+  course("CMT427", "Information Storage and Retrieval", "Data and Databases", "Introduces information retrieval models, search platforms, and multimodal retrieval systems.", ["Indexing", "Search", "Information Retrieval"], [
+    { title: "Introduction to Information Retrieval", subtopics: ["Overview", "Retrieval problem", "Boolean retrieval", "Architecture of search engine"] },
+    { title: "Document", subtopics: ["Document unit", "Document collections", "Document format and storing"] },
+    { title: "Indexing", subtopics: ["Document processing", "Inverted index", "Simple index construction"] },
+    { title: "Ranking", subtopics: ["Term weighting", "Vector space model", "Scoring for search system"] },
+    { title: "Query and Interface", subtopics: ["Information needs", "Query transformation", "Results displaying"] },
+    { title: "Evaluation in IR", subtopics: ["Standard test collections", "Evaluation metrics", "Relevance assessment"] },
+    { title: "Search Platform", subtopics: ["SOLR", "NLP in IR"] },
+    { title: "Multimodal Retrieval System", subtopics: ["Multimodal data and retrieval problem", "Architecture and application", "Multimodal data characteristics"] },
+    { title: "Image Retrieval", subtopics: ["Image concept and structure", "Feature extraction and representation", "Low and high level features and semantic", "Colour histogram and GLCM-based retrieval", "KNN and SVM-based retrieval"] },
+    { title: "Deep Learning for Retrieval", subtopics: ["Neural network concept", "Layer and node", "Backpropagation and cost function", "Optimizer and learning", "Epoch and learning", "Convolutional neural network and architecture", "Filter and pooling", "Iteration and accuracy"] },
+    { title: "Video Retrieval", subtopics: ["Video concept and structure", "Video indexing and summarization", "Video scene and shot analysis"] }
+  ], [
+    { id: "R01", authors: ["Christopher D. Manning", "Prabhakar Raghavan", "Hinrich Schütze"], title: "Introduction to Information Retrieval", edition: "1st ed.", year: 2008, bookUrl: "https://www.cambridge.org/highereducation/books/introduction-to-information-retrieval/669D108D20F556C5C30957D63B5AB65C" },
+    { id: "R02", authors: ["Stefan Büttcher", "Charles L. A. Clarke", "Gordon V. Cormack"], title: "Information Retrieval: Implementing and Evaluating Search Engines", year: 2016, bookUrl: "https://books.google.com/books/about/Information_Retrieval.html?id=2c3RCwAAQBAJ" },
+    { id: "R03", authors: ["Putra Sumari"], title: "Deep Learning and Neural Network: Practical Approach For Beginner", year: 2021, bookUrl: "https://books.google.com/books?q=Deep+Learning+and+Neural+Network%3A+Practical+Approach+For+Beginner" }
+  ]),
+  course("CPC351", "Principles of Data Analytics", "Data and Databases", "Covers the data analytics lifecycle, R, statistical evaluation, modelling, and communicating results.", ["Data Analytics", "R", "Model Evaluation"], [
+    { title: "Introduction to Big Data Analytics", subtopics: ["Big data overview", "State of the practice in analytics", "Key roles for the new big data ecosystem", "Examples of big data analytics", "Data analytics lifecycle overview"] },
+    { title: "Foundations of Data Analytics Methods Using R", subtopics: ["Setup of R environment", "Introduction to R", "R data structures", "R charts and graphs", "Loading data into R", "Exploratory data analysis", "Managing data"] },
+    { title: "Statistical Concepts", subtopics: ["Descriptive statistics", "Normal distribution", "Lognormal distribution", "Binomial distribution", "Data sampling", "Exploring R statistics"] },
+    { title: "Statistical Methods for Evaluation", subtopics: ["Hypothesis testing", "Difference of means", "Wilcoxon rank-sum test", "Type I and Type II errors", "Power and sample size", "ANOVA"] },
+    { title: "Choosing and Evaluating Models", subtopics: ["Mapping problems to machine learning tasks", "Evaluating models", "Validating models"] },
+    { title: "Overview of Analytical Theory and Methods (Part 1)", subtopics: ["Clustering", "Overview of clustering", "K-means algorithm", "Association rules", "Overview of association rules mining", "Apriori algorithm", "Applications of association rules", "Regression", "Linear regression", "Logistic regression"] },
+    { title: "Overview of Analytical Theory and Methods (Part 2)", subtopics: ["Classification", "Decision trees", "Naïve Bayes classifier", "Time series analysis", "Overview of time series analysis", "ARIMA model", "Text analysis", "Text analysis steps", "Categorizing documents by topics", "Determining sentiments"] },
+    { title: "Documentation, Deployment and Presentations", subtopics: ["Communicating and operationalizing an analytics project", "Creating the final deliverables", "Documentation for data analytics projects", "Deploying models", "Data visualization basics", "Producing effective presentations"] }
+  ], [
+    { id: "R01", authors: ["EMC Education Services"], title: "Data Science and Big Data Analytics: Discovering, Analyzing, Visualizing and Presenting Data", year: 2015, bookUrl: "https://books.google.com/books?id=J94WBgAAQBAJ" },
+    { id: "R02", authors: ["Nina Zumel", "John Mount"], title: "Practical Data Science with R", edition: "2nd ed.", year: 2019, bookUrl: "https://books.google.com/books/about/Practical_Data_Science_with_R_Second_Edi.html?id=HVq4xAEACAAJ" }
+  ]),
+  course("CPC451", "Big Data Technologies and Management", "Data and Databases", "Covers big-data infrastructure, platforms, databases, management, and storage security.", ["Big Data", "NoSQL", "Storage Management"], [
+    { title: "Introduction to Big Data Technologies and Management", subtopics: ["Motivation", "Overview of big data", "Overview of big data infrastructure", "Big data applications"] },
+    { title: "Big Data Theory and Design: Big Data Storage Concepts", subtopics: ["Cluster computing", "Distribution models", "Databases", "Processing and management concepts", "Cloud computing", "Data processing"] },
+    { title: "Big Data Theory and Design: Parallel and Distributed Storage Systems", subtopics: ["File storage", "Block storage", "Object storage", "HPC architectures and trends", "Computing capabilities", "Network interconnects"] },
+    { title: "Big Data Platform", subtopics: ["Hadoop", "Hive"] },
+    { title: "Database for Big Data", subtopics: ["MongoDB", "Cassandra", "Neo4j", "Amazon DynamoDB"] },
+    { title: "Performance Analysis", subtopics: ["Big data analytics"] },
+    { title: "Big Data Management", subtopics: ["Introduction to business continuity", "Backup and archive", "Local replication", "Remote replication"] },
+    { title: "Storage Security", subtopics: ["Confidentiality", "Integrity", "Availability"] }
+  ], [
+    { id: "R01", authors: ["Dhabaleswar K. Panda", "Xiaoyi Lu", "Dipti Shankar"], title: "High-Performance Big Data Computing", year: 2022, bookUrl: "https://mitpress.mit.edu/9780262046855/high-performance-big-data-computing/" },
+    { id: "R02", authors: ["Balamurugan Balusamy", "Nandhini Abirami R.", "Seifedine Kadry", "Amir H. Gandomi"], title: "Big Data: Concepts, Technology, and Architecture", year: 2021, bookUrl: "https://books.google.com/books/about/Big_Data.html?id=tI0kEAAAQBAJ" },
+    { id: "R03", authors: ["Andreas Meier", "Michael Kaufmann"], title: "SQL & NoSQL Databases: Models, Languages, Consistency Options and Architectures for Big Data Management", year: 2019, bookUrl: "https://books.google.com/books/about/SQL_NoSQL_Databases.html?id=XOCgDwAAQBAJ" },
+    { id: "R04", authors: ["EMC Education Services"], title: "Information Storage and Management: Storing, Managing, and Protecting Digital Information in Classic, Virtualized, and Cloud Environments", edition: "2nd ed.", year: 2012, bookUrl: "https://books.google.com/books/about/Information_Storage_and_Management.html?id=tPLBUi8JSogC" }
+  ]),
 
   course("CPC151", "Fundamentals of Logic and Artificial Intelligence", "AI and Intelligent Computing", "Introduces logic, intelligent agents, search, and machine learning.", ["Logic", "Intelligent Agents", "Search"], ["Logical Reasoning", "Intelligent Agents", "Search Strategies"]),
   course("CPC251", "Machine Learning and Computational Intelligence", "AI and Intelligent Computing", "Introduces supervised and unsupervised learning with computational-intelligence methods.", ["Machine Learning", "Neural Networks", "Fuzzy Systems"], ["Machine Learning Foundations", "Supervised Learning", "Unsupervised Learning"], [
