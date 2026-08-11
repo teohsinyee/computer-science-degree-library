@@ -38,3 +38,11 @@ assert.match(css, /\.changelog-filter-group\s*{[\s\S]*flex:\s*1 1 100%/, "Change
 assert.match(css, /\.changelog-course-link, \.changelog-category-tag\s*{[\s\S]*max-width:/, "Long Changelog tags must not force horizontal overflow");
 assert.match(css, /\[hidden\]\s*{[^}]*display:\s*none\s*!important/, "Hidden primary views must override component display rules");
 assert.match(css, /\.changelog-intro p:not\(\.section-kicker\)\s*{[^}]*margin:\s*\.45rem 0 0/, "Changelog summary needs space below the display heading");
+assert.match(css, /--motion-feedback:\s*140ms/, "Shared feedback timing must be explicit");
+assert.match(css, /--motion-content:\s*180ms/, "Shared content timing must be explicit");
+assert.match(css, /--motion-view:\s*260ms/, "Shared view timing must be explicit");
+assert.match(css, /@keyframes motion-enter/, "Primary views need an entrance animation");
+assert.match(css, /\[data-motion-state="leaving"\]/, "Content changes need an exit state");
+assert.match(css, /\[data-motion-state="entering"\]/, "Content changes need an enter state");
+assert.match(css, /::view-transition-old\(root\)/, "Native view transitions need an outgoing rule");
+assert.match(css, /::view-transition-new\(root\)/, "Native view transitions need an incoming rule");
