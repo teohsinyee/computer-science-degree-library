@@ -10,6 +10,7 @@ const has = (pattern, message) => assert.match(html, pattern, message);
 has(/<header\b[^>]*class=["'][^"']*site-header/, "Missing site header");
 has(/<main\b/, "Missing main landmark");
 has(/<nav\b[^>]*aria-label=["']Primary["']/, "Missing named primary navigation");
+has(/<a\b[^>]*\bhref=["']#changelog["'][^>]*>Changelog<\/a>/, "Missing Changelog navigation link");
 has(/<nav\b[^>]*\bid=["']category-filters["'][^>]*aria-label=["']Course districts["']/, "Missing named district navigation");
 has(/<label\b[^>]*\bfor=["']course-search["']/, "Missing search label");
 has(/<form\b[^>]*\bid=["']search-form["'][^>]*\brole=["']search["']/, "Missing named search form");
@@ -17,6 +18,7 @@ has(/<input\b[^>]*\bid=["']course-search["'][^>]*\btype=["']search["']/, "Missin
 has(/<section\b[^>]*\bid=["']course-grid["'][^>]*\baria-label=["']Courses["']/, "Course grid needs an accessible name");
 has(/<aside\b[^>]*\bid=["']course-detail["'][^>]*\baria-label=["']Course details["']/, "Course detail must be a named aside");
 has(/<section\b[^>]*\bid=["']journal["']/, "Missing private Journal section");
+has(/<section\b[^>]*\bid=["']changelog["'][^>]*\baria-labelledby=["']changelog-title["']/, "Missing named Changelog section");
 has(/<dialog\b[^>]*\bid=["']about-dialog["']/, "Missing About dialog");
 has(/<script\b[^>]*\btype=["']module["'][^>]*\bsrc=["']assets\/app\.js["']/, "Missing app module");
 
@@ -33,6 +35,9 @@ assert.match(app, /card\.setAttribute\(["']aria-label["']/, "Course cards need a
 assert.doesNotMatch(app, /Related learning connections/, "Course detail must not show low-value connection copy");
 assert.match(app, /link\.rel = ["']noopener noreferrer["']/, "External book links need safe attributes");
 assert.match(app, /from "\.\/progress\.js"/, "App must use the private guest-progress module");
+assert.match(app, /from "\.\/changelog\.js"/, "App must use the Changelog helper module");
+assert.match(app, /function renderChangelog\(/, "App must render the Changelog");
+assert.match(app, /changelog-results/, "Changelog needs an announced results summary");
 assert.match(app, /checkbox\.type = ["']checkbox["']/, "Chapters need checkboxes");
 assert.match(app, /chapter-subtopics/, "Planner subtopics must render under their chapter");
 assert.match(app, /saveGuestProgress/, "Chapter changes must attempt browser-local persistence");

@@ -36,6 +36,7 @@ for (const { name, query, category, expectedIds } of [
 }
 
 assert.equal(getCourseIdFromHash("#course/CSE241"), "CSE241");
+assert.equal(getCourseIdFromHash("#changelog"), null);
 assert.equal(getCourseIdFromHash("#filters"), null);
 assert.equal(
   formatReference({ id: "R01", authors: ["Ian Sommerville"], title: "Software Engineering", edition: "10th ed.", year: 2016 }),

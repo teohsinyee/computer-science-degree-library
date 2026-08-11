@@ -13,6 +13,7 @@
       <p class="descriptor">A digital course atlas for<br>Computer Science</p>
       <nav class="primary-nav" aria-label="Primary">
         <a href="#atlas" aria-current="page">Atlas</a>
+        <a href="#changelog">Changelog</a>
         <a href="#journal">Journal</a>
         <button id="pathways" type="button" aria-pressed="false">Pathways</button>
         <button id="about" type="button">About</button>
@@ -51,7 +52,7 @@
         </div>
       </section>
 
-      <section class="atlas-workspace" aria-label="Course atlas">
+      <section id="atlas-workspace" class="atlas-workspace" aria-label="Course atlas">
         <nav id="category-filters" aria-label="Course districts" class="category-filters"></nav>
         <p id="result-summary" aria-live="polite">Loading the course atlas.</p>
         <div class="atlas-layout">
@@ -67,7 +68,18 @@
         </div>
       </section>
 
-      <section id="journal" class="journal-section" aria-labelledby="journal-title">
+      <section id="changelog" class="changelog-section" aria-labelledby="changelog-title" hidden>
+        <div class="changelog-intro">
+          <p class="section-kicker">Course library updates</p>
+          <h2 id="changelog-title">Changelog</h2>
+          <p>What changed in the course library.</p>
+        </div>
+        <div id="changelog-filters" class="changelog-filters" aria-label="Filter Changelog updates"></div>
+        <p id="changelog-results" aria-live="polite"></p>
+        <div id="changelog-content" class="changelog-content"></div>
+      </section>
+
+      <section id="journal" class="journal-section" aria-labelledby="journal-title" hidden>
         <div>
           <p class="section-kicker">Your private learning state</p>
           <h2 id="journal-title">Journal</h2>
