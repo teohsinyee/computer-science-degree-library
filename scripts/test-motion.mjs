@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {
   canUseViewTransition,
   createContentTransition,
+  getViewMotionMode,
   prefersReducedMotion,
   runViewTransition
 } from "../assets/motion.js";
@@ -11,6 +12,18 @@ const normal = { matches: false };
 assert.equal(prefersReducedMotion(reduced), true);
 assert.equal(canUseViewTransition({ startViewTransition() {} }, normal), true);
 assert.equal(canUseViewTransition({ startViewTransition() {} }, reduced), false);
+assert.deepEqual(
+  getViewMotionMode({ hasRenderedView: false, documentRef: { startViewTransition() {} }, mediaQueryList: normal }),
+  { playEntrance: true, useViewTransition: false }
+);
+assert.deepEqual(
+  getViewMotionMode({ hasRenderedView: true, documentRef: { startViewTransition() {} }, mediaQueryList: normal }),
+  { playEntrance: false, useViewTransition: true }
+);
+assert.deepEqual(
+  getViewMotionMode({ hasRenderedView: true, documentRef: { startViewTransition() {} }, mediaQueryList: reduced }),
+  { playEntrance: true, useViewTransition: false }
+);
 
 let fallbackUpdates = 0;
 await runViewTransition({}, normal, () => { fallbackUpdates += 1; });

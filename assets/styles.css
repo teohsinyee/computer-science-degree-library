@@ -11,7 +11,7 @@
   --slate: #737577;
   --motion-feedback: 140ms;
   --motion-content: 180ms;
-  --motion-view: 260ms;
+  --motion-view: 320ms;
   --motion-ease: ease-out;
   color: var(--ink);
   background: var(--paper);
@@ -27,11 +27,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
 a { color: inherit; }
 [hidden] { display: none !important; }
 
-@keyframes motion-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes motion-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes motion-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes motion-fade-in { from { opacity: .35; } to { opacity: 1; } }
 
-::view-transition-old(root) { animation: motion-fade-out var(--motion-view) var(--motion-ease) both; }
-::view-transition-new(root) { animation: motion-enter var(--motion-view) var(--motion-ease) both; }
+::view-transition-old(root) { animation: motion-fade-out 180ms var(--motion-ease) both; }
+::view-transition-new(root) { animation: motion-fade-in var(--motion-view) var(--motion-ease) both; }
 
 [data-motion-state="leaving"] { opacity: 0; transition: opacity 120ms var(--motion-ease); }
 [data-motion-state="entering"] { animation: motion-enter var(--motion-content) var(--motion-ease) both; }

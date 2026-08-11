@@ -7,6 +7,11 @@ export function canUseViewTransition(documentRef, mediaQueryList) {
     && typeof documentRef?.startViewTransition === "function";
 }
 
+export function getViewMotionMode({ hasRenderedView, documentRef, mediaQueryList }) {
+  const useViewTransition = Boolean(hasRenderedView && canUseViewTransition(documentRef, mediaQueryList));
+  return { playEntrance: !useViewTransition, useViewTransition };
+}
+
 export function runViewTransition(documentRef, mediaQueryList, update) {
   if (!canUseViewTransition(documentRef, mediaQueryList)) return Promise.resolve(update());
   const transition = documentRef.startViewTransition(update);

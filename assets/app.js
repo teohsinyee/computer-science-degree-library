@@ -20,6 +20,7 @@ import {
   toggleChapter
 } from "./progress.js";
 import {
+  getViewMotionMode,
   createContentTransition,
   prefersReducedMotion,
   runViewTransition
@@ -53,6 +54,7 @@ let pathwaysEnabled = false;
 let progressSaveNotice = "";
 let selectedChangelogType = "All";
 let selectedChangelogCategory = "All";
+let hasRenderedView = false;
 
 function getBrowserStorage() {
   try {
@@ -400,7 +402,7 @@ function playViewEntrance(element) {
   element.addEventListener("animationend", () => element.classList.remove("motion-view-enter"), { once: true });
 }
 
-function updateView() {
+function updateView({ playEntrance = true } = {}) {
   const view = currentView();
   const atlasVisible = view === "atlas";
   atlas.hidden = !atlasVisible;
@@ -416,19 +418,24 @@ function updateView() {
   if (atlasVisible) {
     renderCourses();
     renderDetail();
-    playViewEntrance(atlas);
-    playViewEntrance(atlasWorkspace);
+    if (playEntrance) {
+      playViewEntrance(atlas);
+      playViewEntrance(atlasWorkspace);
+    }
   } else if (view === "changelog") {
     renderChangelog();
-    playViewEntrance(changelog);
+    if (playEntrance) playViewEntrance(changelog);
   } else {
     renderJournal();
-    playViewEntrance(journal);
+    if (playEntrance) playViewEntrance(journal);
   }
 }
 
 function renderView() {
-  return runViewTransition(document, reducedMotion, updateView);
+  const mode = getViewMotionMode({ hasRenderedView, documentRef: document, mediaQueryList: reducedMotion });
+  hasRenderedView = true;
+  const update = () => updateView({ playEntrance: mode.playEntrance });
+  return mode.useViewTransition ? runViewTransition(document, reducedMotion, update) : update();
 }
 
 function updateDetail({ focusDetail = false, focusSelector = null } = {}) {
